@@ -16,10 +16,11 @@ h1{
     font-family: Revue;
     font-weight: 500;
     font-style: normal;
+    color: #f44343;
 }
 
 body {
-    background-color: #f44343;
-    color: white;
+    background-color: #fff9ea;
+    color: rgb(0, 0, 0);
     font-family: "PT Serif", serif;
 }

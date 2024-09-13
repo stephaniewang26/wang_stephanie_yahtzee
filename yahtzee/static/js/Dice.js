@@ -52,7 +52,13 @@ class Dice{
      * <br> Uses this.set to update dice
     */
     roll(){
-
+        
+        let die_values_array = []
+        for (let i=0; i<5; i++){
+            let die_value = Math.floor(Math.random() * 6) + 1;
+            die_values_array.push(die_value)
+        }
+        console.log(die_values_array);
     }
 
     /**
