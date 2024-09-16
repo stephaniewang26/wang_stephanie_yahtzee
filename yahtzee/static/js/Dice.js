@@ -11,7 +11,8 @@ class Dice{
      * @return {Number} an integer representing the number of rolls remaining for a turn
     */
     get_rolls_remaining(){
-
+        console.log(this.rolls_remaining_element.textContent);
+        return(this.rolls_remaining_element.textContent);
     }
 
     /**
@@ -51,14 +52,21 @@ class Dice{
      * Also updates rolls remaining
      * <br> Uses this.set to update dice
     */
-    roll(){
+    roll(){ 
+        // Changes rolls remaining
+        let rolls_remaining = this.rolls_remaining_element.textContent;
+        rolls_remaining = Number(rolls_remaining) - 1;
         
+        //Creates array w/ new values
         let die_values_array = []
         for (let i=0; i<5; i++){
             let die_value = Math.floor(Math.random() * 6) + 1;
             die_values_array.push(die_value)
         }
         console.log(die_values_array);
+        
+        //Updates display of dice_elements
+        this.set(die_values_array,rolls_remaining)
     }
 
     /**
@@ -92,7 +100,11 @@ class Dice{
      *
     */
     set(new_dice_values, new_rolls_remaining){
+        this.rolls_remaining_element.textContent = new_rolls_remaining;
 
+        for (let i in new_dice_values){
+            this.dice_elements[i].src="/img/"+this.photo_names[new_dice_values[i]]+".svg"
+        }
     }
 }
 
