@@ -91,6 +91,7 @@ class Dice{
     */
     reserve(die_element){
         die_element.classList.toggle("reserved");
+        //CANT RESERVE BLANK DIE🆘 etc
     }
 
     /**
