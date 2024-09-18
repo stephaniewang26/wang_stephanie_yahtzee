@@ -23,7 +23,20 @@ class Dice{
      * @return {Array} an array of integers representing dice values of dice pictures
     */
     get_values(){
+        let values_array = [];
+        for (let i = 0; i<5; i++){
+            let die = document.getElementById("die_"+i);
 
+            //Only gets photo name part of img src
+            let die_img = die.src;
+            die_img = die_img.replace("http://127.0.0.1:5000/img/","");
+            die_img = die_img.replace(".svg","");
+
+            //Finds photo name inside of array and gets value from that
+            values_array[i] = this.photo_names.indexOf(die_img);
+        }
+
+        return(values_array);
     }
 
     /**
@@ -33,8 +46,13 @@ class Dice{
      * @return {Number} an integer represenitng the sum of all five dice
     */
     get_sum(){
+        let dice_elements_values = this.get_values();
+        let dice_sum = 0
+        for (let die_value of dice_elements_values){
+            dice_sum += die_value;
+        }
 
-
+        return(dice_sum);
     }
 
     /**
@@ -44,7 +62,15 @@ class Dice{
      * @return {Array} an array of six integers representing counts of the six die faces
     */
     get_counts(){
+        let counts_array = [0,0,0,0,0,0];
+        let dice_elements_values = this.get_values();
+        for (let die_value of dice_elements_values){
+            if (die_value != 0){
+                counts_array[die_value-1] += 1;
+            }
+        }
 
+        return(counts_array);
     }
 
     /**
@@ -55,9 +81,15 @@ class Dice{
     roll(){ 
         // Changes rolls remaining
         let rolls_remaining = this.rolls_remaining_element.textContent;
-        if (rolls_remaining>0){
+        let done_rolling = false;
+        if (rolls_remaining>=0){
             rolls_remaining = Number(rolls_remaining) - 1;
+            if (rolls_remaining == -1){
+                done_rolling = true;
+            }
         }
+        console.log("rolls remaining"+rolls_remaining);
+        console.log(done_rolling);
         
         //Creates array w/ new values
         let die_values_array = []
@@ -68,7 +100,9 @@ class Dice{
         console.log(die_values_array);
         
         //Updates display of dice_elements
-        this.set(die_values_array,rolls_remaining)
+        if (done_rolling == false){
+            this.set(die_values_array,rolls_remaining)
+        }
     }
 
     /**
@@ -77,7 +111,10 @@ class Dice{
      * <br> Uses this.#setDice to update dice
     */
     reset(){
-        die_element.classList.remove("reserved");
+        for (let i = 0; i<5; i++){
+            let die = document.getElementById("die_"+i);
+            die.classList.remove("reserved");
+        }
         this.set([0,0,0,0,0],3);
     }
 
@@ -90,6 +127,7 @@ class Dice{
      * @param {Object} element the <img> element representing the die to reserve
     */
     reserve(die_element){
+        console.log(die_element);
         die_element.classList.toggle("reserved");
         //CANT RESERVE BLANK DIE🆘 etc
     }
@@ -106,11 +144,11 @@ class Dice{
     set(new_dice_values, new_rolls_remaining){
         this.rolls_remaining_element.textContent = new_rolls_remaining;
 
-        if (new_rolls_remaining > 0){
-            for (let i in new_dice_values){
-                if (new_dice_values[i] >= 0 && new_dice_values[i] <= 6){
-                    this.dice_elements[i].src="/img/"+this.photo_names[new_dice_values[i]]+".svg";
-                }
+        
+        
+        for (let i in new_dice_values){
+            if (new_dice_values[i] >= 0 && new_dice_values[i] <= 6){
+                this.dice_elements[i].src="/img/"+this.photo_names[new_dice_values[i]]+".svg";
             }
         }
     }

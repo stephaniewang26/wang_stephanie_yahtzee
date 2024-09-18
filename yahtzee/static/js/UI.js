@@ -10,7 +10,7 @@ roll_button.addEventListener('click', roll_dice_handler);
 let dice_elements =[];
 for (let i = 0; i<5; i++){
     let die = document.getElementById("die_"+i);
-    die.addEventListener('dblclick', reserve_die_handler);
+    die.addEventListener("dblclick", reserve_die_handler);
     dice_elements.push(die);
 }
 let rolls_remaining_element = document.getElementById("rolls_remaining");
