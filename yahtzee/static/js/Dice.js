@@ -79,6 +79,8 @@ class Dice{
      * <br> Uses this.set to update dice
     */
     roll(){ 
+        //🆘🆘🆘🆘🆘🆘ONLY ROLL IS FAILING!
+
         // Changes rolls remaining
         let rolls_remaining = this.rolls_remaining_element.textContent;
         let done_rolling = false;
@@ -127,9 +129,10 @@ class Dice{
      * @param {Object} element the <img> element representing the die to reserve
     */
     reserve(die_element){
-        console.log(die_element);
-        die_element.classList.toggle("reserved");
-        //CANT RESERVE BLANK DIE🆘 etc
+        console.log(die_element.src);
+        if (die_element.src.includes("blank") == false){
+            die_element.classList.toggle("reserved");
+        }
     }
 
     /**
