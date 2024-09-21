@@ -177,7 +177,9 @@ class Dice_Helper_Function_Tests(unittest.TestCase):
             self.browser.get(self.url) 
     
             for i in range(3):
+                #self.browser.save_screenshot('what.png')
                 self.browser.execute_script(f"window.dice.roll();");
+                #self.browser.save_screenshot('what2.png')
             
                 for i in range(5):
                     die_element = self.browser.find_element(By.ID, f"die_{i}")

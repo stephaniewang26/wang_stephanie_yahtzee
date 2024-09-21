@@ -80,24 +80,39 @@ class Dice{
     */
     roll(){ 
         //🆘🆘🆘🆘🆘🆘ONLY ROLL IS FAILING!
+        
+        //create an array with true/false based on if die is reserved
+        let reserved_array = []
+        for (let i = 0; i<5; i++){
+            let die = document.getElementById("die_"+i);
+
+            if (die.classList.contains("reserved")){
+                reserved_array.push(true);
+            }
+            else{
+                reserved_array.push(false);
+            }
+        }
+        console.log(reserved_array)
 
         // Changes rolls remaining
         let rolls_remaining = this.rolls_remaining_element.textContent;
         let done_rolling = false;
         if (rolls_remaining>=0){
-            rolls_remaining = Number(rolls_remaining) - 1;
-            if (rolls_remaining == -1){
-                done_rolling = true;
-            }
+                rolls_remaining = Number(rolls_remaining) - 1;
+                if (rolls_remaining == -1){
+                    done_rolling = true;
+                }
         }
-        
-        //create an array with true/false based on if it has the class
 
         //Creates array w/ new values
         let die_values_array = this.get_values();
         for (let i=0; i<5; i++){
             let die_value = Math.floor(Math.random() * 6) + 1;
-            die_values_array[i] = die_value;
+
+            if (reserved_array[i] == false){
+                die_values_array[i] = die_value;
+            }
         }
         console.log(die_values_array);
         
