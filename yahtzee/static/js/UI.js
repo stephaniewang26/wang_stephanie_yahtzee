@@ -14,7 +14,6 @@ for (let i = 0; i<5; i++){
     dice_elements.push(die);
 }
 let rolls_remaining_element = document.getElementById("rolls_remaining");
-
 let dice = new Dice(dice_elements, rolls_remaining_element);
 window.dice = dice; //useful for testing to add a reference to global window object
 
@@ -30,9 +29,8 @@ for (let category of category_elements){
     });
 }
 let score_elements = Array.from(document.getElementsByClassName("score"));
-//let gamecard = new Gamecard(category_elements, score_elements, dice);
-//window.gamecard = gamecard; //useful for testing to add a reference to global window object
-
+let gamecard = new Gamecard(category_elements, score_elements, dice);
+window.gamecard = gamecard; //useful for testing to add a reference to global window object
 
 
 
@@ -53,6 +51,7 @@ function roll_dice_handler(){
 
 function enter_score_handler(event){
     console.log("Score entry attempted for: ", event.target.id);
+    gamecard.is_valid_score()
 }
 
 //------Feedback ---------//
