@@ -1,6 +1,6 @@
 console.log("UI.js connected")
 import Dice from './Dice.js';
-//import Gamecard from './Gamecard.js';
+import Gamecard from './Gamecard.js';
 
 //-------Dice Setup--------//
 let roll_button = document.getElementById('roll_button'); 
@@ -51,7 +51,8 @@ function roll_dice_handler(){
 
 function enter_score_handler(event){
     console.log("Score entry attempted for: ", event.target.id);
-    gamecard.is_valid_score()
+    let category = event.target.id.replace("_input","");
+    gamecard.is_valid_score(category);
 }
 
 //------Feedback ---------//

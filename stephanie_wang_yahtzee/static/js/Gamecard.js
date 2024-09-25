@@ -27,7 +27,7 @@ class Gamecard{
      * @return {Boolean} a Boolean value indicating whether the score is valid for the category
     */
     is_valid_score(category, value){
-      
+        
     }
 
     /**
