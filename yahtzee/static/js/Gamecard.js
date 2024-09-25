@@ -27,7 +27,7 @@ class Gamecard{
      * @return {Boolean} a Boolean value indicating whether the score is valid for the category
     */
     is_valid_score(category, value){
-        
+        return true;
     }
 
     /**
@@ -36,7 +36,7 @@ class Gamecard{
     * @return {Number} an integer value representing the curent game score
     */
     get_score(){
-        
+
     }
 
     /**
@@ -102,7 +102,17 @@ class Gamecard{
      *
      */
     to_object(){
-      
+        let scorecard_obj = new Object();
+        scorecard_obj.rolls_remaining = this.dice.get_rolls_remaining();
+        scorecard_obj.upper = new Object();
+        scorecard_obj.lower = new Object();
+
+        for (el of this.category_elements){
+            🆘🆘🆘🆘🆘
+        }
+
+        return scorecard_obj;
+        
     }
 }
 
