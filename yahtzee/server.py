@@ -4,7 +4,7 @@ from flask import render_template
 import json
 import calendar
 import math
-
+import os
 #test
 
 app = Flask(__name__, static_url_path='', static_folder='static')
@@ -15,8 +15,9 @@ def login():
 
 @app.route('/game')
 def game():
-    username_input = request.args.get('username_input')
-    return render_template('game.html', username = username_input)
+    username = request.args.get('username')
+    return render_template('game.html', username = username)
 
-
-app.run(debug=True)
+if __name__=="__main__":
+    port = int(os.environ.get("PORT",8080))
+    app.run(debug=True, port=port)

@@ -12,7 +12,7 @@ class Dice_Helper_Function_Tests(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         #Runs once, before any tests are run
-        self.url='http://127.0.0.1:5000/game?username=super_mario&password=123@456!'
+        self.url='http://127.0.0.1:8080/game?username=super_mario&password=123@456!'
         self.image_names = ["blank.svg", "one.svg", "two.svg", "three.svg", "four.svg", "five.svg", "six.svg"]
         self.trials = 20
 
