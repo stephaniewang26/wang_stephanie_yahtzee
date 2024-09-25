@@ -29,7 +29,7 @@ class Dice{
 
             //Only gets photo name part of img src
             let die_img = die.src;
-            die_img = die_img.replace("http://127.0.0.1:5000/img/","");
+            die_img = die_img.replace("http://127.0.0.1:8080/img/","");
             die_img = die_img.replace(".svg","");
 
             //Finds photo name inside of array and gets value from that

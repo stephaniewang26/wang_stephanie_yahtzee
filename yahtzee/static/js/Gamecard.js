@@ -36,7 +36,7 @@ class Gamecard{
     * @return {Number} an integer value representing the curent game score
     */
     get_score(){
-
+        
     }
 
     /**
