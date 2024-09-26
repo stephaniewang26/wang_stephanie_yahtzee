@@ -54,7 +54,7 @@ function enter_score_handler(event){
     let element = document.getElementById(event.target.id)
     let value = element.value;
 
-    if (gamecard.is_valid_score(category,element) == true){
+    if (gamecard.is_valid_score(element,value) == true){
         element.disabled = true;
     }
 }

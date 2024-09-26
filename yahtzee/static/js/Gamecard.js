@@ -27,6 +27,8 @@ class Gamecard{
      * @return {Boolean} a Boolean value indicating whether the score is valid for the category
     */
     is_valid_score(category, value){
+        let upper_categories = this.category_elements.splice(0,6);
+        console.log(this.to_object().upper);
         return true;
     }
 
@@ -101,24 +103,21 @@ class Gamecard{
      * @return {Object} an object version of the scorecard
      *
      */
+    // 🆘 🆘 🆘 🆘 fix!!!
     to_object(){
         let scorecard_obj = new Object();
         scorecard_obj.rolls_remaining = this.dice.get_rolls_remaining();
         scorecard_obj.upper = new Object();
         scorecard_obj.lower = new Object();
 
-        for (el of this.category_elements){
-            🆘🆘🆘🆘🆘
+        //Gets rid of _input
+        let shortened_elements = [];
+        for (let el of this.category_elements){
+            shortened_elements.push(el.id.replace("_input",""));
         }
-
-        return scorecard_obj;
         
+        return scorecard_obj;
     }
 }
 
 export default Gamecard;
-
-
-
-
-
