@@ -27,9 +27,52 @@ class Gamecard{
      * @return {Boolean} a Boolean value indicating whether the score is valid for the category
     */
     is_valid_score(category, value){
-        let upper_categories = this.category_elements.splice(0,6);
-        console.log(this.to_object().upper);
-        return true;
+        //🌸 IF CATEGORY IS THE ELEMENT
+        //let category_name = category.id.replace("_input","");
+
+        // if (value == ""){
+        //     return false;
+        // }
+
+        // if (category.classList.contains("upper")){
+        //     let category_number = this.dice.photo_names.indexOf(category_name);
+        //     let dice_counts = this.dice.get_counts();
+        //     let real_score = dice_counts[category_number-1] * category_number;
+
+        //     // console.log("category number"+category_number);
+        //     // console.log(dice_counts[category_number-1]);
+        //     // console.log("real score"+real_score);
+
+        //     if (real_score == value){
+        //         return true;
+        //     }
+        //     else{
+        //         return false;
+        //     }
+        // }
+        // return ("lower category");
+        //🌸
+
+        if (this.dice.get_sum()==0){
+            return false;
+        }
+
+        if (this.dice.photo_names.includes(category)){
+            let category_number = this.dice.photo_names.indexOf(category);
+            let dice_counts = this.dice.get_counts();
+            let real_score = (dice_counts[category_number-1] * category_number).toString();
+
+            console.log(real_score);
+            console.log(Number(value));
+
+            if (real_score === value.toString()){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        
     }
 
     /**
