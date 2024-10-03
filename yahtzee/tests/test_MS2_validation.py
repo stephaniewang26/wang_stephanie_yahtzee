@@ -109,12 +109,12 @@ class MS2_Validation_Tests(unittest.TestCase):
             for test in upper_tests[category]:
                 self.browser.get(self.url)
                 self.browser.execute_script(f"window.dice.set({test[1]}, 2);")
-                self.browser.save_screenshot(f"{category}_input.png")
+                #self.browser.save_screenshot(f"{category}_input.png")
                 if type(test[0]) is str:
                      result = self.browser.execute_script(f"return window.gamecard.is_valid_score('{category}', '{test[0]}');")
                 else:
                      result = self.browser.execute_script(f"return window.gamecard.is_valid_score('{category}', {test[0]});")
-                self.browser.save_screenshot(f"{category}_input_after_enter.png")
+                #self.browser.save_screenshot(f"{category}_input_after_enter.png")
                 self.assertEqual(result, test[2])
     
     def test_lower_categories_validation(self):

@@ -54,8 +54,6 @@ function enter_score_handler(event){
     let element = document.getElementById(event.target.id)
     let value = element.value;
 
-    // console.log(gamecard.is_valid_score(element,value));
-
     let category_name = element.id.replace("_input","");
     console.log(gamecard.is_valid_score(category_name,value));
     if (gamecard.is_valid_score(category_name,value) == true){

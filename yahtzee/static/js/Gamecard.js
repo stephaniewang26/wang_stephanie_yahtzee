@@ -13,7 +13,12 @@ class Gamecard{
      * @return {Boolean} a Boolean value indicating whether the scorecard is full
      */
     is_finished(){
-        
+        for (let category of this.category_elements){
+            if (category.disabled == false){
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -57,13 +62,11 @@ class Gamecard{
             return false;
         }
 
+        //UPPER
         if (this.dice.photo_names.includes(category)){
             let category_number = this.dice.photo_names.indexOf(category);
             let dice_counts = this.dice.get_counts();
             let real_score = (dice_counts[category_number-1] * category_number).toString();
-
-            console.log(real_score);
-            console.log(Number(value));
 
             if (real_score === value.toString()){
                 return true;
@@ -72,7 +75,84 @@ class Gamecard{
                 return false;
             }
         }
-        
+        //LOWER
+        else{
+            let dice_real_sum = (this.dice.get_sum()).toString();
+            if (category=="three_of_a_kind" || category == "four_of_a_kind" || category=="chance"){
+                if (dice_real_sum === value.toString())
+                    return true;
+                if (value.toString() === "0")
+                    return true;
+                return false;
+            }
+            if(category=="full_house"){
+                let value_check_arr = [];
+                for (let count of this.dice.get_counts()){
+                    if (count == 3 || count == 2)
+                        value_check_arr.push(count);
+                }
+                if (value_check_arr.length == 2 && value_check_arr.includes(3)){
+                    if (value == 25)
+                        return true;
+                    return false;
+                }
+                if (value.toString() === "0")
+                    return true;
+                return false;
+            }
+            if (category=="small_straight"){
+                let counts_1 = (this.dice.get_counts()).slice(0,4);
+                let counts_2 = (this.dice.get_counts()).slice(1,5);
+                let counts_3 = (this.dice.get_counts()).slice(2,6);
+                let shortened_counts = [counts_1,counts_2,counts_3];
+                let limit = 0;
+
+                for (let current_array of shortened_counts){
+                    console.log(current_array);
+                    if (current_array.includes(0) == true){
+                        limit += 1;
+                    }
+                }
+                if (limit > 2){
+                    if (value.toString() === "0")
+                        return true;
+                    return false;
+                }
+                if(value == 30)
+                    return true;
+                return false;
+            }
+            if (category=="large_straight"){
+                let counts_1 = (this.dice.get_counts()).slice(0,5);
+                let counts_2 = (this.dice.get_counts()).slice(2,7);
+                let shortened_counts = [counts_1,counts_2];
+                let limit = 0;
+
+                for (let current_array of shortened_counts){
+                    if (current_array.includes(0) == true){
+                        limit += 1;
+                    }
+                }
+                if (limit > 1){
+                    if (value.toString() === "0")
+                        return true;
+                    return false;
+                }
+                if(value == 40)
+                    return true;
+                return false;
+            }
+            if (category=="yahtzee"){
+                if (this.dice.get_counts().includes(5)){
+                    if (value==50)
+                        return true;
+                    return false;
+                }
+                if (value.toString() === "0")
+                    return true;
+                return false;
+            }
+        }
     }
 
     /**
@@ -81,7 +161,11 @@ class Gamecard{
     * @return {Number} an integer value representing the curent game score
     */
     get_score(){
-
+        let sum=0;
+        for (let category of this.category_elements){
+            sum += Number(category.value);
+        }
+        return sum;
     }
 
     /**
