@@ -62,6 +62,10 @@ class Gamecard{
             return false;
         }
 
+        if (value.toString() === '0'){
+            return true;
+        }
+
         //UPPER
         if (this.dice.photo_names.includes(category)){
             let category_number = this.dice.photo_names.indexOf(category);
@@ -75,6 +79,7 @@ class Gamecard{
                 return false;
             }
         }
+
         //LOWER
         else{
             let dice_real_sum = (this.dice.get_sum()).toString();
@@ -172,7 +177,47 @@ class Gamecard{
      * Updates all score elements for a scorecard
     */
     update_scores(){
-       
+       let upper_score = 0;
+       let bonus = 0;
+       let upper_total = 0;
+       let lower_score = 0;
+       let grand_total=0;
+
+       //GENERAL SCORE CALC
+       for (let category of this.category_elements){
+            if (category.disabled == true){
+                if (category.classList.contains("upper"))
+                    upper_score += Number(category.value);
+                else
+                    lower_score += Number(category.value);
+            }
+       }
+
+       //UPPER SCORE
+       document.getElementById("upper_score").textContent = upper_score.toString();
+
+       //UPPER BONUS
+       if (upper_score >= 63){
+            bonus += 35;
+            document.getElementById("upper_bonus").textContent = "35";
+       }
+       else{
+            document.getElementById("upper_bonus").textContent = "0";
+       }
+
+       //UPPER TOTAL
+       upper_total += (upper_score+bonus);
+       document.getElementById("upper_total").textContent = upper_total.toString();
+
+       //LOWER SCORE
+       document.getElementById("lower_score").textContent = lower_score.toString();
+
+       //UPPER TOTAL (ON THE BOTTOM)
+       document.getElementById("upper_total_lower").textContent = upper_total.toString();
+
+       //GRAND TOTAL 
+       grand_total += (upper_total+lower_score);
+       document.getElementById("grand_total").textContent = grand_total.toString();
     }
 
     /**
@@ -201,7 +246,26 @@ class Gamecard{
      * @param {Object} gameObject the object version of the scorecard
     */
     load_scorecard(score_info){
-       
+        for (let section in score_info){
+            if (section == "rolls_remaining"){
+                document.getElementById(section).textContent = score_info[section].toString();
+            }
+            else{
+                for (let shortened_category in score_info[section]){
+                    let category_name = shortened_category+"_input";
+        
+                    if (score_info[section][shortened_category] != -1){
+                        console.log(score_info[section][shortened_category])
+                        document.getElementById(category_name).value = score_info[section][shortened_category].toString();
+                        document.getElementById(category_name).disabled = true;
+                    }
+                    else{
+                        document.getElementById(category_name).value = "";
+                        document.getElementById(category_name).disabled = false;
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -230,17 +294,25 @@ class Gamecard{
      * @return {Object} an object version of the scorecard
      *
      */
-    // 🆘 🆘 🆘 🆘 fix!!!
     to_object(){
         let scorecard_obj = new Object();
         scorecard_obj.rolls_remaining = this.dice.get_rolls_remaining();
         scorecard_obj.upper = new Object();
         scorecard_obj.lower = new Object();
 
-        //Gets rid of _input
-        let shortened_elements = [];
-        for (let el of this.category_elements){
-            shortened_elements.push(el.id.replace("_input",""));
+        for (let category of this.category_elements){
+            let shortened_category = category.id.replace("_input","");
+            if (category.classList.contains("upper")){
+                if (category.disabled == true)
+                    scorecard_obj.upper[shortened_category] = Number(category.value);
+                else
+                    scorecard_obj.upper[shortened_category] = -1;
+            }
+            else
+                if (category.disabled == true)
+                    scorecard_obj.lower[shortened_category] = Number(category.value);
+                else
+                    scorecard_obj.lower[shortened_category] = -1;
         }
         
         return scorecard_obj;
