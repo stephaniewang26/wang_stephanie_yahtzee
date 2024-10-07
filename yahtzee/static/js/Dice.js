@@ -78,9 +78,7 @@ class Dice{
      * Also updates rolls remaining
      * <br> Uses this.set to update dice
     */
-    roll(){ 
-        //🆘🆘🆘🆘🆘🆘ONLY ROLL IS FAILING!
-        
+    roll(){
         //create an array with true/false based on if die is reserved
         let reserved_array = []
         for (let i = 0; i<5; i++){
@@ -97,13 +95,7 @@ class Dice{
 
         // Changes rolls remaining
         let rolls_remaining = this.rolls_remaining_element.textContent;
-        let done_rolling = false;
-        if (rolls_remaining>=0){
-                rolls_remaining = Number(rolls_remaining) - 1;
-                if (rolls_remaining == -1){
-                    done_rolling = true;
-                }
-        }
+        rolls_remaining = Number(rolls_remaining) - 1;
 
         //Creates array w/ new values
         let die_values_array = this.get_values();
@@ -117,9 +109,7 @@ class Dice{
         console.log(die_values_array);
         
         //Updates display of dice_elements
-        if (done_rolling == false){
-            this.set(die_values_array,rolls_remaining)
-        }
+        this.set(die_values_array,rolls_remaining);
     }
 
     /**

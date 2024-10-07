@@ -41,9 +41,10 @@ function reserve_die_handler(event){
 }
 
 function roll_dice_handler(){
-    display_feedback("Rolling the dice...", "good");
-    dice.roll()
-
+    if (dice.get_rolls_remaining() != 0 && gamecard.is_finished() == false){
+        display_feedback("Rolling the dice...", "good");
+        dice.roll()
+    }
     console.log("Dice values:", dice.get_values());
     console.log("Sum of all dice:", dice.get_sum());
     console.log("Count of all dice faces:", dice.get_counts());
@@ -58,6 +59,7 @@ function enter_score_handler(event){
     console.log(gamecard.is_valid_score(category_name,value));
     if (gamecard.is_valid_score(category_name,value) == true){
         element.disabled = true;
+        dice.reset();
     }
 }
 
