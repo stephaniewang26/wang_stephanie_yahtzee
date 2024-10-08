@@ -58,6 +58,7 @@ class Gamecard{
         // return ("lower category");
         //🌸
 
+        //TOP LEVEL CHECKS
         if (this.dice.get_sum()==0){
             return false;
         }

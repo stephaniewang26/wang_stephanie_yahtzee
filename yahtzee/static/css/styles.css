@@ -29,3 +29,11 @@ body {
     border: 2px solid red;
     border-radius: 10px;    
 }
+
+.good {
+    color: green;
+}
+
+.bad{
+    color:#f44343;
+}
