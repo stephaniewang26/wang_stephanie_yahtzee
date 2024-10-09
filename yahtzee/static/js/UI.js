@@ -48,7 +48,7 @@ function reserve_die_handler(event){
 
 function roll_dice_handler(){
     if (dice.get_rolls_remaining() != 0 && gamecard.is_finished() == false){
-        display_feedback("good", "Rolling the dice...");
+        display_feedback("clear", "");
         dice.roll()
     }
     if (dice.get_rolls_remaining() == 0){
@@ -112,6 +112,10 @@ function display_feedback(context, message){
     if (context == "bad"){
         feedback_el.className = '';
         feedback_el.classList.add('bad');
+        feedback_el.textContent = message;
+    }
+    if (context == "clear"){
+        feedback_el.className = '';
         feedback_el.textContent = message;
     }
 }
