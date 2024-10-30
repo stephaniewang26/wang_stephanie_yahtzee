@@ -70,6 +70,7 @@ function enter_score_handler(event){
     if (gamecard.is_valid_score(category_name,value) == true){
         element.disabled = true;
         display_feedback("good","Valid score entered!")
+        gamecard.update_scores();
         dice.reset();
     }
     else{
@@ -77,6 +78,7 @@ function enter_score_handler(event){
     }
 
     if (gamecard.is_finished() == true){
+        gamecard.update_scores();
         display_feedback("good","Scorecard completed!")
     }
 }
@@ -96,6 +98,7 @@ function load_button_handler(){
     }
     else{
         display_feedback("good","Loaded game!")
+        gamecard.update_scores();
     }
 }
 

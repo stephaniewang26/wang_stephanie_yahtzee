@@ -167,11 +167,8 @@ class Gamecard{
     * @return {Number} an integer value representing the curent game score
     */
     get_score(){
-        let sum=0;
-        for (let category of this.category_elements){
-            sum += Number(category.value);
-        }
-        return sum;
+        this.update_scores();
+        return Number(document.getElementById("grand_total").textContent);
     }
 
     /**
@@ -203,7 +200,7 @@ class Gamecard{
             document.getElementById("upper_bonus").textContent = "35";
        }
        else{
-            document.getElementById("upper_bonus").textContent = "0";
+            document.getElementById("upper_bonus").textContent = "None";
        }
 
        //UPPER TOTAL
@@ -267,6 +264,7 @@ class Gamecard{
                 }
             }
         }
+        this.update_scores();
     }
 
     /**
