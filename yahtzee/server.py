@@ -24,7 +24,10 @@ app.add_url_rule('/login', view_func=session_controller.login, methods = ['GET']
 
 #GAME
 app.add_url_rule('/games/<username>', view_func=game_controller.user_games, methods = ['GET'])
-finished 3
+app.add_url_rule('/games', view_func=game_controller.create_game, methods = ['POST'])
+app.add_url_rule('/games/join', view_func=game_controller.join_game, methods = ['POST'])
+app.add_url_rule('/games/delete/<game_name>/<username>', view_func=game_controller.remove_user_from_game, methods = ['GET'])
+app.add_url_rule('/games/<game_name>/<username>', view_func=game_controller.get_game, methods = ['GET'])
 
 #SCORECARD
 
