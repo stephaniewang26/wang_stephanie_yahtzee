@@ -14,7 +14,7 @@ fpath = os.path.join(os.path.dirname(__file__), 'controllers')
 sys.path.append(fpath)
 fpath = os.path.join(os.path.dirname(__file__), 'models')
 sys.path.append(fpath)
-from controllers import session_controller, game_controller
+from Controllers import session_controller, game_controller, user_controller
 
 #The Router section of our application conects routes to Contoller methods
 
@@ -25,13 +25,15 @@ app.add_url_rule('/login', view_func=session_controller.login, methods = ['GET']
 #GAME
 app.add_url_rule('/games/<username>', view_func=game_controller.user_games, methods = ['GET'])
 app.add_url_rule('/games', view_func=game_controller.create_game, methods = ['POST'])
-app.add_url_rule('/games/join', view_func=game_controller.join_game, methods = ['POST'])
-app.add_url_rule('/games/delete/<game_name>/<username>', view_func=game_controller.remove_user_from_game, methods = ['GET'])
-app.add_url_rule('/games/<game_name>/<username>', view_func=game_controller.get_game, methods = ['GET'])
+# app.add_url_rule('/games/join', view_func=game_controller.join_game, methods = ['POST'])
+# app.add_url_rule('/games/delete/<game_name>/<username>', view_func=game_controller.remove_user_from_game, methods = ['GET'])
+# app.add_url_rule('/games/<game_name>/<username>', view_func=game_controller.get_game, methods = ['GET'])
 
 #SCORECARD
 
 #USER
+app.add_url_rule('/users', view_func=user_controller.blank_user_details, methods = ['GET'])
+app.add_url_rule('/users/<username>', view_func=user_controller.get_user_details, methods = ['GET'])
 
 # app.add_url_rule('/fruit', view_func=FruitController.fruit, methods = ['POST', 'GET'])
 # app.add_url_rule('/fruit/<fruit_name>', view_func=FruitController.single_fruit, methods = ['GET'])

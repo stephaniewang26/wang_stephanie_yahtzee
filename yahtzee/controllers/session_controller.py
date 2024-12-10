@@ -12,7 +12,9 @@ def index():
 
 def login():
     print(f"request.url={request.url}")
-    return render_template('user_games.html')
+    username = request.args.get('username')
+    password = request.args.get('password')
+    return render_template('user_games.html', username=username, password=password)
 
     # if login successful:
     #     return render_template('user_games.html')
