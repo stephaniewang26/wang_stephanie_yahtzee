@@ -32,7 +32,7 @@ app.add_url_rule('/games', view_func=game_controller.create_game, methods = ['PO
 #SCORECARD
 
 #USER
-app.add_url_rule('/users', view_func=user_controller.blank_user_details, methods = ['GET'])
+app.add_url_rule('/users', view_func=user_controller.blank_user_details, methods = ['POST', 'GET'])
 app.add_url_rule('/users/<username>', view_func=user_controller.get_user_details, methods = ['GET'])
 
 # app.add_url_rule('/fruit', view_func=FruitController.fruit, methods = ['POST', 'GET'])
