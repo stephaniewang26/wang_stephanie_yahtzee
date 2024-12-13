@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Yahtzee: Login</title>
+    <title>Yahtzee: User Details</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,7 +12,7 @@
   <body>
     <center>
     <p>user details</p>
-    <section>{{feedback}}</section>
+    <section id="feedback">{{feedback}}</section>
     <form action="/users" method="POST">
       <label for="username_input">Username:</label>
       <input type="text" id="username_input" name="username">
@@ -24,7 +24,7 @@
       <input type="text" id="email_input" name="email">
       <br><br>
       jinja if statement 
-      <input type="submit" value="Create User" id="create_user_submit">
+      <input type="submit" value="Create" id="user_details_submit">
       id of the button stays the same, but the value of the button changes depending on /users post or get 
     </form>
     <footer>{% include 'partial/footer.html' %}</footer>
