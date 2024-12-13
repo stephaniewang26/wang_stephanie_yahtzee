@@ -6,7 +6,7 @@ import calendar
 import math
 import os
 
-def blank_user_details():
+def users():
     print(f"request.url={request.url}")
     if request.method == 'GET':
         return render_template('user_details.html')
