@@ -103,9 +103,10 @@ class User:
                 return {"status":"error",
                     "data":"Username already exists!"}
             elif user_data_dict["username"].isalnum() == False:
-                if "-" not in user_data_dict["username"] and "_" not in user_data_dict["username"]:
-                    return {"status":"error",
-                            "data":"Username contains forbidden characters!"}
+                for character in user_data_dict["username"]:
+                    if character != "-" and character != "_" and character.isalnum() == False:
+                        return {"status":"error",
+                                "data":"Username contains forbidden characters!"}
                 
             #PASSWORD
             if len(user_data_dict["password"]) < 8:

@@ -137,78 +137,78 @@ class Basic_Web_Tests(unittest.TestCase):
             self.assertIn(user["username"], all_usernames, f"DB should have user with username {user['username']}")
         print("test_create_user... test passed!")
    
-    # def test_create_user_invalid_info(self):
-    #     """Submit user information - Incorrect data format produces feedback"""
-    #     for username in self.invalid_usernames:
-    #         self.browser.get(self.url)
-    #         self.enter_and_submit_user_info(username, "12345_abcde", "hi@gmail.com")
-    #         wait(self.browser, 0.5)
+    def test_create_user_invalid_info(self):
+        """Submit user information - Incorrect data format produces feedback"""
+        for username in self.invalid_usernames:
+            self.browser.get(self.url)
+            self.enter_and_submit_user_info(username, "12345_abcde", "hi@gmail.com")
+            wait(self.browser, 0.5)
 
-    #         self.assertEqual(self.browser.title, "Yahtzee: User Details", f"Should redirect to user_details.html")
-    #         feedback_element = self.browser.find_element(By.ID, "feedback")
-    #         self.assertTrue(len(feedback_element.text)>10, "Substantial feedback should be provided.")
+            self.assertEqual(self.browser.title, "Yahtzee: User Details", f"Should redirect to user_details.html")
+            feedback_element = self.browser.find_element(By.ID, "feedback")
+            self.assertTrue(len(feedback_element.text)>10, "Substantial feedback should be provided.")
 
-    #         new_user = self.User_Model.get(username=username)
-    #         self.assertEqual(new_user["status"], "error", "Invalid username should not be added to DB.")
+            new_user = self.User_Model.get(username=username)
+            self.assertEqual(new_user["status"], "error", "Invalid username should not be added to DB.")
 
-    #     for password in self.invalid_passwords:
-    #         self.browser.get(self.url)
-    #         username = "hey_yo_lets_go123"
-    #         self.enter_and_submit_user_info(username, password, "hi@gmail.com")
-    #         wait(self.browser, 0.5)
+        for password in self.invalid_passwords:
+            self.browser.get(self.url)
+            username = "hey_yo_lets_go123"
+            self.enter_and_submit_user_info(username, password, "hi@gmail.com")
+            wait(self.browser, 0.5)
 
-    #         self.assertEqual(self.browser.title, "Yahtzee: User Details", f"Should redirect to user_details.html")
-    #         feedback_element = self.browser.find_element(By.ID, "feedback")
-    #         self.assertTrue(len(feedback_element.text)>10, "Substantial feedback should be provided.")
+            self.assertEqual(self.browser.title, "Yahtzee: User Details", f"Should redirect to user_details.html")
+            feedback_element = self.browser.find_element(By.ID, "feedback")
+            self.assertTrue(len(feedback_element.text)>10, "Substantial feedback should be provided.")
 
-    #         new_user = self.User_Model.get(username=username)
-    #         self.assertEqual(new_user["status"], "error", "Invalid passowrd should not be added to DB.")
+            new_user = self.User_Model.get(username=username)
+            self.assertEqual(new_user["status"], "error", "Invalid passowrd should not be added to DB.")
 
-    #     for email in self.invalid_emails:
-    #         self.browser.get(self.url)
-    #         username = "hey_yo_lets_go123"
-    #         self.enter_and_submit_user_info(username, "12345_abscd", email)
-    #         wait(self.browser, 1)
+        for email in self.invalid_emails:
+            self.browser.get(self.url)
+            username = "hey_yo_lets_go123"
+            self.enter_and_submit_user_info(username, "12345_abscd", email)
+            wait(self.browser, 1)
 
-    #         self.assertEqual(self.browser.title, "Yahtzee: User Details", f"Should redirect to user_details.html")
+            self.assertEqual(self.browser.title, "Yahtzee: User Details", f"Should redirect to user_details.html")
 
-    #         #type='email' prevents bad emails from being used
-    #         #feedback_element = self.browser.find_element(By.ID, "feedback")
-    #         #self.assertTrue(len(feedback_element.text)>10, "Substantial feedback should be provided.")
+            #type='email' prevents bad emails from being used
+            #feedback_element = self.browser.find_element(By.ID, "feedback")
+            #self.assertTrue(len(feedback_element.text)>10, "Substantial feedback should be provided.")
 
-    #         new_user = self.User_Model.get(username=username)
-    #         self.assertEqual(new_user["status"], "error", "Invalid email should not be added to DB.")
+            new_user = self.User_Model.get(username=username)
+            self.assertEqual(new_user["status"], "error", "Invalid email should not be added to DB.")
 
-    #     print("test_create_user_invalid_info... test passed!")
+        print("test_create_user_invalid_info... test passed!")
    
-    # def test_create_user_duplicate_username_email(self):
-    #     """Submit user information - Username or email already exists"""
-    #     for user in self.valid_users:
-    #         self.browser.get(self.url)
-    #         self.enter_and_submit_user_info(user["username"], user["password"], user["email"])
-    #         wait(self.browser, 2).until_not(EC.title_is(self.user_details_create_requirements["title"]))
+    def test_create_user_duplicate_username_email(self):
+        """Submit user information - Username or email already exists"""
+        for user in self.valid_users:
+            self.browser.get(self.url)
+            self.enter_and_submit_user_info(user["username"], user["password"], user["email"])
+            wait(self.browser, 2).until_not(EC.title_is(self.user_details_create_requirements["title"]))
        
-    #     self.browser.get(self.url)
-    #     duplicate_username = self.valid_users[0]["username"]
-    #     self.enter_and_submit_user_info(duplicate_username, "12345_abdf", "new_email@gmail.com")
+        self.browser.get(self.url)
+        duplicate_username = self.valid_users[0]["username"]
+        self.enter_and_submit_user_info(duplicate_username, "12345_abdf", "new_email@gmail.com")
 
-    #     self.assertEqual(self.browser.title, "Yahtzee: User Details", f"Should redirect to user_details.html")
-    #     feedback_element = self.browser.find_element(By.ID, "feedback")
-    #     self.assertTrue(len(feedback_element.text)>10, "Substantial feedback should be provided.")
-    #     all_users = self.User_Model.get_all()
-    #     self.assertEqual(len(self.valid_users), len(all_users["data"]), f"DB should have same number of valid users")
+        self.assertEqual(self.browser.title, "Yahtzee: User Details", f"Should redirect to user_details.html")
+        feedback_element = self.browser.find_element(By.ID, "feedback")
+        self.assertTrue(len(feedback_element.text)>10, "Substantial feedback should be provided.")
+        all_users = self.User_Model.get_all()
+        self.assertEqual(len(self.valid_users), len(all_users["data"]), f"DB should have same number of valid users")
 
-    #     self.browser.get(self.url)
-    #     duplicate_email = self.valid_users[1]["email"]
-    #     self.enter_and_submit_user_info("brand_new_username", "12345_abdf", duplicate_email)
+        self.browser.get(self.url)
+        duplicate_email = self.valid_users[1]["email"]
+        self.enter_and_submit_user_info("brand_new_username", "12345_abdf", duplicate_email)
 
-    #     self.assertEqual(self.browser.title, "Yahtzee: User Details", f"Should redirect to user_details.html")
-    #     feedback_element = self.browser.find_element(By.ID, "feedback")
-    #     self.assertTrue(len(feedback_element.text)>10, "Substantial feedback should be provided.")
-    #     all_users = self.User_Model.get_all()
-    #     self.assertEqual(len(self.valid_users), len(all_users["data"]), f"DB should have same number of valid users")
+        self.assertEqual(self.browser.title, "Yahtzee: User Details", f"Should redirect to user_details.html")
+        feedback_element = self.browser.find_element(By.ID, "feedback")
+        self.assertTrue(len(feedback_element.text)>10, "Substantial feedback should be provided.")
+        all_users = self.User_Model.get_all()
+        self.assertEqual(len(self.valid_users), len(all_users["data"]), f"DB should have same number of valid users")
 
-    #     print("test_create_user_duplicate_username_email... test passed!")
+        print("test_create_user_duplicate_username_email... test passed!")
 
     # #------------------UPDATE tests-----------------
     # def test_required_elements_update(self):

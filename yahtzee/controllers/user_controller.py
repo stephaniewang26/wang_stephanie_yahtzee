@@ -6,13 +6,16 @@ import calendar
 import math
 import os
 
+from Models import User_Model
+DB_location=f"{os.getcwd()}/yahtzee/Models/yahtzeeDB.db"
+Users = User_Model.User(DB_location, "users")
+
 def users():
     print(f"request.url={request.url}")
+
     if request.method == 'GET':
         return render_template('user_details.html')
     elif request.method == 'POST':
-        #pseudocode yayayy
-        # import user model
         # get values inputted ✅
         inputted_username = request.form.get("username")
         inputted_password = request.form.get("password")
@@ -22,15 +25,21 @@ def users():
                          "password":inputted_password,
                          "email":inputted_email}
         print(inputted_info)
-        # check if user exists (pass in username)
-            #if so, return negative feedback
-                #return render_template('user_details.html', feedback=negative feedback)
-                #you can template in {{feedback}}
-            # if not, then attempt to create
-                #act depending on if it returns success/error --> if success, then direct to user_games
-                #if not, then use feedback from error message and template it in
-                    #return render_template('user_details.html', feedback=negative feedback)
-        return render_template('user_games.html')
+        # check if user exists (pass in username) --> if so, return negative feedback ✅
+        exists_packet = Users.exists(username=inputted_info["username"])
+        if exists_packet["data"] == True:
+            print("exists!")
+            return render_template('user_details.html', feedback="User already exists!") #🆘🆘🆘 should this b model thing
+        #🆘🆘🆘 what about error?
+        # if not, then attempt to create ✅
+        else:
+            create_packet = Users.create(inputted_info)
+            #act depending on if it returns success/error --> if success, then direct to user_games ✅
+            if create_packet["status"] == "success":
+                return render_template('user_games.html')
+            #if not, then use feedback from error message and template it in ✅
+            else:
+                return render_template('user_details.html', feedback=create_packet["data"])
 
 def get_user_details():
     print(f"request.url={request.url}")
