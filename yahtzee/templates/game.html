@@ -1,14 +1,9 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Yahtzee: {{username}}</title>
-    <link rel="stylesheet" href="css/styles.css">
-  </head>
+  {% include 'partial/header.html' %}
   <body>
     <center>
-    <h1>Yahtzee: {{username}}</h1>
+    <h1>Yahtzee: {{username}} 🆘 🆘  make sure page title is Yahtzee: {{username}}</h1> 
       <section id="save_and_load">
           <table>
               <tr>                
@@ -145,7 +140,7 @@
           </table>
         </section>
       </section>  
-      <footer>{% include 'partial/footer.html' %}</footer>
+      {% include 'partial/footer.html' %}
     </center>
       <script src="/js/UI.js"  type="module"></script>
   </body>

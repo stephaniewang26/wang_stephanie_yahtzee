@@ -18,7 +18,6 @@ import User_Model
 Tests Create, Update, Delete user via the user_details.html page
 '''
 class Basic_Web_Tests(unittest.TestCase):
-
     def enter_and_submit_user_info(self, username, password, email):
         """Helper method"""
         username_element = self.browser.find_element(By.ID, "username_input")
@@ -211,30 +210,30 @@ class Basic_Web_Tests(unittest.TestCase):
         print("test_create_user_duplicate_username_email... test passed!")
 
     # #------------------UPDATE tests-----------------
-    # def test_required_elements_update(self):
-    #     """user_details.html contains all required elements/id's"""
-    #     for user in self.valid_users:
-    #         self.browser.get(self.url)
-    #         self.enter_and_submit_user_info(user["username"], user["password"], user["email"])
-    #         wait(self.browser, 2).until_not(EC.title_is(self.user_details_update_requirements["title"]))
+    def test_required_elements_update(self):
+        """user_details.html contains all required elements/id's"""
+        for user in self.valid_users:
+            self.browser.get(self.url)
+            self.enter_and_submit_user_info(user["username"], user["password"], user["email"])
+            wait(self.browser, 2).until_not(EC.title_is(self.user_details_update_requirements["title"]))
 
-    #     self.browser.get(f"{self.url}/{self.valid_users[2]['username']}")
-    #     expected = self.user_details_update_requirements['title']
-    #     actual = self.browser.title
-    #     self.assertEqual(actual, expected, f"The page title for user_details.html should be {expected}")
+        self.browser.get(f"{self.url}/{self.valid_users[2]['username']}")
+        expected = self.user_details_update_requirements['title']
+        actual = self.browser.title
+        self.assertEqual(actual, expected, f"The page title for user_details.html should be {expected}")
 
-    #     for expected_id in self.user_details_update_requirements['elements']:
-    #         try:
-    #             actual_element = self.browser.find_element(By.ID, expected_id)
-    #             if expected_id=="user_details_submit":
-    #                 self.assertEqual(actual_element.get_attribute("value").lower(), "UPDATE".lower(), f"The form button should say UPDATE")
-    #         except:
-    #             self.fail(f"#{expected_id} element does not exist!")
-    #         expected_type = self.user_details_update_requirements['elements'][expected_id].lower()
-    #         actual_type = actual_element.tag_name
-    #         self.assertEqual(actual_type.lower(), expected_type, f"The type of element should be {expected_type}")
+        for expected_id in self.user_details_update_requirements['elements']:
+            try:
+                actual_element = self.browser.find_element(By.ID, expected_id)
+                if expected_id=="user_details_submit":
+                    self.assertEqual(actual_element.get_attribute("value").lower(), "UPDATE".lower(), f"The form button should say UPDATE")
+            except:
+                self.fail(f"#{expected_id} element does not exist!")
+            expected_type = self.user_details_update_requirements['elements'][expected_id].lower()
+            actual_type = actual_element.tag_name
+            self.assertEqual(actual_type.lower(), expected_type, f"The type of element should be {expected_type}")
         
-    #     print("test_required_elements_update... test passed!")
+        print("test_required_elements_update... test passed!")
 
     
     # def test_update_user_exits(self):

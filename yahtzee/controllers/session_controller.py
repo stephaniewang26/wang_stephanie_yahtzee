@@ -8,13 +8,13 @@ import os
 
 def index():
     print(f"request.url={request.url}")
-    return render_template('login.html')
+    return render_template('login.html', title="Yahtzee: Login")
 
 def login():
     print(f"request.url={request.url}")
     username = request.args.get('username')
     password = request.args.get('password')
-    return render_template('user_games.html', username=username, password=password)
+    return render_template('user_games.html', username=username, password=password, title="Yahtzee: User Games")
 
     # if login successful:
     #     return render_template('user_games.html')

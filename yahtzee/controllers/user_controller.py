@@ -12,9 +12,11 @@ Users = User_Model.User(DB_location, "users")
 
 def users():
     print(f"request.url={request.url}")
+    user_details_title = "Yahtzee: User Details"
+    user_games_title = "Yahtzee: User Games"
 
     if request.method == 'GET':
-        return render_template('user_details.html')
+        return render_template('user_details.html', btn_context="create", title=user_details_title)
     elif request.method == 'POST':
         # get values inputted ✅
         inputted_username = request.form.get("username")
@@ -29,21 +31,20 @@ def users():
         exists_packet = Users.exists(username=inputted_info["username"])
         if exists_packet["data"] == True:
             print("exists!")
-            return render_template('user_details.html', feedback="User already exists!") #🆘🆘🆘 should this b model thing
-        #🆘🆘🆘 what about error?
+            return render_template('user_details.html', feedback="User already exists!", btn_context="create", title=user_details_title)
         # if not, then attempt to create ✅
         else:
             create_packet = Users.create(inputted_info)
             #act depending on if it returns success/error --> if success, then direct to user_games ✅
             if create_packet["status"] == "success":
-                return render_template('user_games.html')
+                return render_template('user_games.html', title=user_games_title)
             #if not, then use feedback from error message and template it in ✅
             else:
-                return render_template('user_details.html', feedback=create_packet["data"])
+                return render_template('user_details.html', feedback=create_packet["data"], btn_context="create", title=user_details_title)
 
-def get_user_details():
+def users_username(username):
     print(f"request.url={request.url}")
-    return render_template('user_details.html')
+    return render_template('user_details.html', btn_context="update delete")
 
 # def fruit():
 #     print(f"request.method= {request.method} request.url={request.url}")
