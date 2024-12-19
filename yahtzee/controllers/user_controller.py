@@ -53,6 +53,7 @@ def users_username(username):
         return render_template('user_details.html', btn_context="update delete", title=titles_dict["user_details"], username_field=get_packet_data["username"], password_field=get_packet_data["password"], email_field=get_packet_data["email"])
     # elif request.method == 'POST':
     #     #update user details
+    make 2 forms for delete/update and the delete form only has the submit button
 
 
 
