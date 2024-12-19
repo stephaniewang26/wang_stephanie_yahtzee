@@ -1,0 +1,6 @@
+working on computer#8:
+cd .venv
+source bin/activate
+
+run tests:
+python3 test_user_details_client_server.py

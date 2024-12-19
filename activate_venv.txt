@@ -1,2 +1,0 @@
-working on computer#8:
-source ./.venv/bin/activate

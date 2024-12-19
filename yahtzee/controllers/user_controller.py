@@ -10,13 +10,14 @@ from Models import User_Model
 DB_location=f"{os.getcwd()}/yahtzee/Models/yahtzeeDB.db"
 Users = User_Model.User(DB_location, "users")
 
+import html_titles
+titles_dict = html_titles.get_titles()
+
 def users():
     print(f"request.url={request.url}")
-    user_details_title = "Yahtzee: User Details"
-    user_games_title = "Yahtzee: User Games"
 
     if request.method == 'GET':
-        return render_template('user_details.html', btn_context="create", title=user_details_title)
+        return render_template('user_details.html', btn_context="create", title=titles_dict["user_details"])
     elif request.method == 'POST':
         # get values inputted ✅
         inputted_username = request.form.get("username")
@@ -31,20 +32,32 @@ def users():
         exists_packet = Users.exists(username=inputted_info["username"])
         if exists_packet["data"] == True:
             print("exists!")
-            return render_template('user_details.html', feedback="User already exists!", btn_context="create", title=user_details_title)
+            return render_template('user_details.html', feedback="User already exists!", btn_context="create", title=titles_dict["user_details"])
         # if not, then attempt to create ✅
         else:
             create_packet = Users.create(inputted_info)
             #act depending on if it returns success/error --> if success, then direct to user_games ✅
             if create_packet["status"] == "success":
-                return render_template('user_games.html', title=user_games_title)
+                return render_template('user_games.html', title=titles_dict["user_games"])
             #if not, then use feedback from error message and template it in ✅
             else:
-                return render_template('user_details.html', feedback=create_packet["data"], btn_context="create", title=user_details_title)
+                return render_template('user_details.html', feedback=create_packet["data"], btn_context="create", title=titles_dict["user_details"])
 
 def users_username(username):
     print(f"request.url={request.url}")
-    return render_template('user_details.html', btn_context="update delete")
+    get_packet_data = (Users.get(username=username))["data"]
+    user_id = get_packet_data["id"]
+
+    if request.method == 'GET':
+        #get user details page for update/delete, pre-fill text fields
+        return render_template('user_details.html', btn_context="update delete", title=titles_dict["user_details"], username_field=get_packet_data["username"], password_field=get_packet_data["password"], email_field=get_packet_data["email"])
+    # elif request.method == 'POST':
+    #     #update user details
+
+
+
+
+
 
 # def fruit():
 #     print(f"request.method= {request.method} request.url={request.url}")

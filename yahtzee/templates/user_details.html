@@ -5,20 +5,25 @@
     <center>
     <p>user details</p>
     <section id="feedback">{{feedback}}</section>
+    {% if btn_context == "create" %}
     <form action="/users" method="POST">
+    {% elif btn_context == "update delete"%}
+    <form action="/users/{{username_field}}" method="POST">
+    {% endif %}
       <label for="username_input">Username:</label>
-      <input type="text" id="username_input" name="username">
+      <input type="text" id="username_input" name="username" value={{username_field}}>
       <br><br>
       <label for="password_input">Password:</label>
-      <input type="text" id="password_input" name="password">
+      <input type="text" id="password_input" name="password" value={{password_field}}>
       <br><br>
       <label for="email_input">Email:</label>
-      <input type="text" id="email_input" name="email">
+      <input type="text" id="email_input" name="email" value={{email_field}}>
       <br><br>
       {% if btn_context == "create" %}
       <input type="submit" value="Create" id="user_details_submit">
       {% elif btn_context == "update delete"%}
-      <input type="submit" value="Delete" id="user_details_submit">
+      <input type="submit" value="Delete" id="user_details_delete_submit">
+      <input type="submit" value="Update" id="user_details_submit">
       {% endif %}
       <p>id of the button stays the same, but the value of the button changes depending on /users post or get</p>
     </form>
