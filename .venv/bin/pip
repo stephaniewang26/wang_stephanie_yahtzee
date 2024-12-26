@@ -1,4 +1,4 @@
-#!/Users/stephanie.wang26/Desktop/ADVCSTOPICS/yahtzee/.venv/bin/python
+#!/Users/stephaniewang/Downloads/wang_stephanie_yahtzee/.venv/bin/python3.13
 # -*- coding: utf-8 -*-
 import re
 import sys

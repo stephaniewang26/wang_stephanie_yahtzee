@@ -1,3 +1,5 @@
+REDO THE VENV STUFF ON #8
+
 working on computer#8:
 cd .venv
 source bin/activate
