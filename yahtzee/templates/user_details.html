@@ -22,11 +22,15 @@
       {% if btn_context == "create" %}
       <input type="submit" value="Create" id="user_details_submit">
       {% elif btn_context == "update delete"%}
-      <input type="submit" value="Delete" id="user_details_delete_submit">
       <input type="submit" value="Update" id="user_details_submit">
       {% endif %}
-      <p>id of the button stays the same, but the value of the button changes depending on /users post or get</p>
     </form>
+    {% if btn_context == "update delete" %}
+    <!-- 🆘🆘 change action -->
+    <form action="/users/delete/:username" method="GET">
+      <input type="submit" value="Delete" id="user_details_delete_submit">
+    </form>
+    {% endif %}
     {% include 'partial/footer.html' %}
     </center>
   </body>

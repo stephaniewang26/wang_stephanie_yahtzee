@@ -223,9 +223,13 @@ class User:
                     return {"status":"error",
                             "data": "Username already exists!"}
                 elif user_info["username"].isalnum() == False:
-                    if "-" not in user_info["username"] and "_" not in user_info["username"]:
-                        return {"status":"error",
-                                "data":"Username contains forbidden characters!"}
+                    for character in user_info["username"]:
+                        if character != "-" and character != "_" and character.isalnum() == False:
+                            return {"status":"error",
+                                    "data":"Username contains forbidden characters!"}
+                    # if "-" not in user_info["username"] and "_" not in user_info["username"]:
+                    #     return {"status":"error",
+                    #             "data":"Username contains forbidden characters!"}
                 #password
                 if len(user_info["password"]) < 8:
                     return {"status":"error",

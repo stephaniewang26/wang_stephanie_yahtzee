@@ -45,16 +45,35 @@ def users():
 
 def users_username(username):
     print(f"request.url={request.url}")
+
+    if (Users.exists(username=username))["data"] != True:
+        # 🆘🆘🆘🆘 ask if i should be returning the create button
+        return render_template('user_details.html', feedback="That user does not exist!", btn_context="create", title=titles_dict["user_details"])
+
     get_packet_data = (Users.get(username=username))["data"]
     user_id = get_packet_data["id"]
 
     if request.method == 'GET':
         #get user details page for update/delete, pre-fill text fields
         return render_template('user_details.html', btn_context="update delete", title=titles_dict["user_details"], username_field=get_packet_data["username"], password_field=get_packet_data["password"], email_field=get_packet_data["email"])
-    # elif request.method == 'POST':
-    #     #update user details
-    #make 2 forms for delete/update and the delete form only has the submit button
-
+    elif request.method == 'POST':
+        #update user details
+        inputted_username = request.form.get("username")
+        inputted_password = request.form.get("password")
+        inputted_email = request.form.get("email")
+        updated_info = {"username":inputted_username,
+                         "password":inputted_password,
+                         "email":inputted_email,
+                         "id":user_id}
+        print(updated_info)
+        print(Users.update(user_info=updated_info))
+        #if succeeds, render template
+        update_packet = Users.update(user_info=updated_info)
+        if (update_packet)["status"] == "success":
+            return render_template('user_details.html', feedback="Successfully updated!", btn_context="update delete", title=titles_dict["user_details"], username_field=updated_info["username"], password_field=updated_info["password"], email_field=updated_info["email"])
+        #else, show bad feedback
+        else:
+            return render_template('user_details.html', feedback=update_packet["data"], btn_context="update delete", title=titles_dict["user_details"], username_field=get_packet_data["username"], password_field=get_packet_data["password"], email_field=get_packet_data["email"])
 
 
 

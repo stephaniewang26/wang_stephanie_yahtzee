@@ -6,3 +6,19 @@ source bin/activate
 
 run tests:
 python3 test_user_details_client_server.py
+
+https://stackoverflow.com/questions/25436312/gitignore-not-working
+update files w/ gitignore (tried w/ venv activated and in topmost directory)
+git rm -rf --cached .
+git add .
+
+https://stackoverflow.com/questions/26399754/how-to-use-python-virtual-environment-in-another-computer
+install requirements.txt (tried w/ venv activated in .venv directory):
+pip install -r requirements.txt
+
+get all packages installed:
+pip freeze > requirements.txt
+
+OTHER LINKS:
+https://code.visualstudio.com/docs/python/tutorial-flask
+- most useful link for installing flask w/ venv
