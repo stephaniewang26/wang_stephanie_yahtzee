@@ -70,11 +70,20 @@ def users_username(username):
         #if succeeds, render template
         update_packet = Users.update(user_info=updated_info)
         if (update_packet)["status"] == "success":
-            return render_template('user_details.html', feedback="Successfully updated!", btn_context="update delete", title=titles_dict["user_details"], username_field=updated_info["username"], password_field=updated_info["password"], email_field=updated_info["email"])
+            return render_template('user_details.html', feedback="User successfully updated!", btn_context="update delete", title=titles_dict["user_details"], username_field=updated_info["username"], password_field=updated_info["password"], email_field=updated_info["email"])
         #else, show bad feedback
         else:
             return render_template('user_details.html', feedback=update_packet["data"], btn_context="update delete", title=titles_dict["user_details"], username_field=get_packet_data["username"], password_field=get_packet_data["password"], email_field=get_packet_data["email"])
 
+def users_delete_username(username):
+    print(f"request.url={request.url}")
+
+    if (Users.exists(username=username))["data"] != True:
+        # 🆘🆘🆘🆘 ask what i should be returning
+        return render_template('login.html', title=titles_dict["login"], feedback="That user does not exist!")
+    else:
+        Users.remove(username=username)
+        return render_template('login.html', title=titles_dict["login"], feedback="User successfully deleted.")
 
 
 
