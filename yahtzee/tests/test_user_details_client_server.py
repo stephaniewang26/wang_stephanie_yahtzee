@@ -18,6 +18,7 @@ import User_Model
 Tests Create, Update, Delete user via the user_details.html page
 '''
 class Basic_Web_Tests(unittest.TestCase):
+
     def enter_and_submit_user_info(self, username, password, email):
         """Helper method"""
         username_element = self.browser.find_element(By.ID, "username_input")
@@ -92,12 +93,13 @@ class Basic_Web_Tests(unittest.TestCase):
 
         self.DB_location=f"{os.getcwd()}/../Models/yahtzeeDB.db" #Assumes DB lives in the Models folder which is right next to the tests folder
         self.user_table_name = "users"
-
-        wipe_and_clean_tables(self.DB_location) # All tables in DB are wiped and recreated to start each test
+        self.game_table_name = "games"
+        self.scorecard_table_name = "scorecard"
+        wipe_and_clean_tables(self.DB_location, self.user_table_name, self.game_table_name, self.scorecard_table_name)
         self.User_Model = User_Model.User(self.DB_location, self.user_table_name)
 
     #------------------CREATE tests-----------------
-    
+     
     def test_required_elements_create(self):
         """user_details.html contains all required elements/id's"""
         self.browser.get(self.url)
@@ -237,7 +239,7 @@ class Basic_Web_Tests(unittest.TestCase):
 
     
     def test_update_user_exits(self):
-        """Update user - Username exists"""
+        """Delete user - Username exists"""
         for user in self.valid_users:
             self.browser.get(self.url)
             self.enter_and_submit_user_info(user["username"], user["password"], user["email"])
@@ -310,7 +312,6 @@ class Basic_Web_Tests(unittest.TestCase):
 
             self.assertEqual(self.browser.title, "Yahtzee: User Details", f"Should redirect to user_details.html")
             feedback_element = self.browser.find_element(By.ID, "feedback")
-            print(password, feedback_element.text)
             self.assertTrue(len(feedback_element.text)>10, "Substantial feedback should be provided.")
 
             new_user = self.User_Model.get(username=username)
@@ -332,14 +333,14 @@ class Basic_Web_Tests(unittest.TestCase):
             self.assertEqual(new_user["status"], "error", "Invalid email should not be added to DB.")
 
         print("test_update_user_invalid_info... test passed!")
-
+     
     def test_update_user_duplicate_info(self):
         """update user - Invalid info"""
         for user in self.valid_users:
             self.browser.get(self.url)
             self.enter_and_submit_user_info(user["username"], user["password"], user["email"])
             wait(self.browser, 2).until_not(EC.title_is(self.user_details_create_requirements["title"]))
-        
+         
         #Duplicate username
         self.browser.get(f"{self.url}/{self.valid_users[2]['username']}")
         duplicate_username= self.valid_users[1]['username']
@@ -349,11 +350,11 @@ class Basic_Web_Tests(unittest.TestCase):
         self.assertEqual(self.browser.title, "Yahtzee: User Details", f"Should redirect to user_details.html")
         feedback_element = self.browser.find_element(By.ID, "feedback")
         self.assertTrue(len(feedback_element.text)>10, "Substantial feedback should be provided.")
-
+         
         #Duplicate email
         self.browser.get(f"{self.url}/{self.valid_users[2]['username']}")
         duplicate_email= self.valid_users[0]['email']
-        self.enter_and_submit_user_info(self.valid_users[2]['username'], duplicate_email, "hi@gmail.com")
+        self.enter_and_submit_user_info(self.valid_users[2]['username'], "123456789", duplicate_email)
         wait(self.browser, 0.5)
 
         self.assertEqual(self.browser.title, "Yahtzee: User Details", f"Should redirect to user_details.html")
@@ -362,7 +363,7 @@ class Basic_Web_Tests(unittest.TestCase):
 
         print("test_update_user_duplicate_info... test passed!")
     
-    # #------------------DELETE tests-----------------
+    #------------------DELETE tests-----------------
     def test_delete_user_exits(self):
         """Delete user - Username exists"""
         for user in self.valid_users:

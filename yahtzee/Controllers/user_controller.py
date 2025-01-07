@@ -47,7 +47,6 @@ def users_username(username):
     print(f"request.url={request.url}")
 
     if (Users.exists(username=username))["data"] != True:
-        # 🆘🆘🆘🆘 ask if i should be returning the create button
         return render_template('user_details.html', feedback="That user does not exist!", btn_context="create", title=titles_dict["user_details"])
 
     get_packet_data = (Users.get(username=username))["data"]
@@ -79,7 +78,6 @@ def users_delete_username(username):
     print(f"request.url={request.url}")
 
     if (Users.exists(username=username))["data"] != True:
-        # 🆘🆘🆘🆘 ask what i should be returning
         return render_template('login.html', title=titles_dict["login"], feedback="That user does not exist!")
     else:
         Users.remove(username=username)
