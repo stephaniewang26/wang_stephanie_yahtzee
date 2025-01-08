@@ -23,6 +23,18 @@ body {
     background-color: #fff9ea;
     color: rgb(0, 0, 0);
     font-family: "PT Serif", serif;
+    height:100%;
+}
+
+html{
+    height: 100%;
+}
+
+#logo{
+    font-family: Revue;
+    font-weight: 500;
+    font-style: normal;
+    color: #f44343;
 }
 
 .reserved {

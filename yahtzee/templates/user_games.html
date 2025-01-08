@@ -1,11 +1,9 @@
-<!doctype html>
-<html lang="en">
-  {% include 'partial/header.html' %}
-  <body>
-    <center>
-    <h1>{{username}} Games</h1>
-    <p>feedback message</p>
-    {% include 'partial/footer.html' %}
-    </center>
-  </body>
-</html>
+{% include 'partial/header.html' %}
+{% include 'partial/navbar.html' %}
+<center>
+<div class="d-flex flex-column vh-100 justify-content-center align-items-center">
+<h1>{{username}} Games</h1>
+<p>feedback message</p>
+</div>
+{% include 'partial/footer.html' %}
+</center>
