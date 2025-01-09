@@ -1,9 +1,21 @@
 {% include 'partial/header.html' %}
 {% include 'partial/navbar.html' %}
 <center>
-<div class="d-flex flex-column vh-100 justify-content-center align-items-center">
 <h1>{{username}} Games</h1>
-<p>feedback message</p>
-</div>
+<section id="feedback">feedback message</section>
+<ol id="games_list">
+    <li>{{game_name}}</li>
+</ol>
+<form action="/games" method="POST">
+    <label for="game_name_input">Game name:</label>
+    <input type="text" id="game_name_input" name="game_name">
+    <input type="submit" value="Create" id="create_submit">
+    <input type="submit" value="Join" id="join_submit">
+    <input type="hidden" id="hidden_username" name="username" value={{username}}>
+</form>
+<h1>High Scores</h1>
+<ol id="high_scores_list">
+    <li>game_name: 300</li>
+</ol>
 {% include 'partial/footer.html' %}
 </center>
