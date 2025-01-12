@@ -7,8 +7,10 @@ import math
 import os
 
 from Models import User_Model
+from Models import Game_Model
 DB_location=f"{os.getcwd()}/yahtzee/Models/yahtzeeDB.db"
 Users = User_Model.User(DB_location, "users")
+Games = Game_Model.Game(DB_location, "games")
 
 import html_titles
 titles_dict = html_titles.get_titles()
@@ -38,7 +40,12 @@ def users():
             create_packet = Users.create(inputted_info)
             #act depending on if it returns success/error --> if success, then direct to user_games ✅
             if create_packet["status"] == "success":
-                return render_template('user_games.html', title=titles_dict["user_games"])
+                get_all_packet = Games.get_all()
+                all_game_names = []
+                for game in get_all_packet["data"]:
+                    all_game_names.append(game["name"])
+
+                return render_template('user_games.html', title=titles_dict["user_games"], games_list=all_game_names, username=create_packet["data"]["username"])
             #if not, then use feedback from error message and template it in ✅
             else:
                 return render_template('user_details.html', feedback=create_packet["data"], btn_context="create", title=titles_dict["user_details"])

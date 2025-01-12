@@ -201,6 +201,18 @@ class Basic_User_Games_Tests(unittest.TestCase):
         el_id = "games_list"
         games_list = self.browser.find_element(By.ID, el_id)
         games_list_games = games_list.find_elements(By.TAG_NAME, 'li')
+
+        # test_list = self.browser.find_element(By.ID, "ol_test")
+        # test_list_items = test_list.find_elements(By.TAG_NAME, 'li')
+
+        # print(test_list)
+        # print(test_list_items)
+        # print(len(test_list_items))
+
+        print(games_list)
+        print(games_list_games)
+        print(len(games_list_games))
+
         self.assertTrue(len(games_list_games)==1, f"{el_id} should have 1 game <li>")
         game_link = games_list_games[0].find_elements(By.TAG_NAME, 'a')
         self.assertEqual(game_link[0].text, game['name'], f"Link text should be {game['name']}")
@@ -216,199 +228,199 @@ class Basic_User_Games_Tests(unittest.TestCase):
         print("test_game_links_1_game... test passed!")
     
     
-    # def test_game_links_many_game(self):
-    #     user = self.valid_users[0]
-    #     user = self.User_Model.create(user)["data"]
-    #     all_game_names = set()
-    #     for game in self.valid_games:
-    #         new_game = self.Game_Model.create(game)["data"]
-    #         game_name=f"{new_game['name']}|{user['username']}"
-    #         self.Scorecard_Model.create(new_game["id"], user["id"], game_name)
-    #         all_game_names.add(new_game['name'])
+    def test_game_links_many_game(self):
+        user = self.valid_users[0]
+        user = self.User_Model.create(user)["data"]
+        all_game_names = set()
+        for game in self.valid_games:
+            new_game = self.Game_Model.create(game)["data"]
+            game_name=f"{new_game['name']}|{user['username']}"
+            self.Scorecard_Model.create(new_game["id"], user["id"], game_name)
+            all_game_names.add(new_game['name'])
         
-    #     self.browser.get(f"{self.url}/{user['username']}")
-    #     el_id = "games_list"
-    #     games_list = self.browser.find_element(By.ID, el_id)
-    #     games_list_games = games_list.find_elements(By.TAG_NAME, 'li')
-    #     self.assertEqual(len(games_list_games),len(self.valid_games), f"{el_id} should have {len(self.valid_games)} game <li>")
+        self.browser.get(f"{self.url}/{user['username']}")
+        el_id = "games_list"
+        games_list = self.browser.find_element(By.ID, el_id)
+        games_list_games = games_list.find_elements(By.TAG_NAME, 'li')
+        self.assertEqual(len(games_list_games),len(self.valid_games), f"{el_id} should have {len(self.valid_games)} game <li>")
        
-    #     for game in games_list_games: 
-    #         game_link = game.find_elements(By.TAG_NAME, 'a')
-    #         game_name = game_link[0].text
-    #         self.assertTrue(game_name in all_game_names, f"{game_name} should be an actual game name.")
-    #         all_game_names.remove(game_name)
-    #         game_href = game_link[0].get_attribute("href")
-    #         link = f"/games/{game_name}/{user['username']}"
-    #         valid_game_link =  (game_href==link) or (game_href==f"http://127.0.0.1:8080{link}")
-    #         self.assertTrue(valid_game_link, f"game link href should be /games/{game_name}/{user['username']}")
-    #         delete_href = game_link[1].get_attribute("href")
-    #         link = f"/games/delete/{game_name}/{user['username']}"
-    #         valid_game_link =  (delete_href==link) or (delete_href==f"http://127.0.0.1:8080{link}")
-    #         self.assertTrue(valid_game_link, f"game link href should be /games/{game_name}/{user['username']}")
+        for game in games_list_games: 
+            game_link = game.find_elements(By.TAG_NAME, 'a')
+            game_name = game_link[0].text
+            self.assertTrue(game_name in all_game_names, f"{game_name} should be an actual game name.")
+            all_game_names.remove(game_name)
+            game_href = game_link[0].get_attribute("href")
+            link = f"/games/{game_name}/{user['username']}"
+            valid_game_link =  (game_href==link) or (game_href==f"http://127.0.0.1:8080{link}")
+            self.assertTrue(valid_game_link, f"game link href should be /games/{game_name}/{user['username']}")
+            delete_href = game_link[1].get_attribute("href")
+            link = f"/games/delete/{game_name}/{user['username']}"
+            valid_game_link =  (delete_href==link) or (delete_href==f"http://127.0.0.1:8080{link}")
+            self.assertTrue(valid_game_link, f"game link href should be /games/{game_name}/{user['username']}")
 
-    #     print("test_game_links_many_game... test passed!")
+        print("test_game_links_many_game... test passed!")
     
-    # def test_game_links_0_games(self):
-    #     user = self.valid_users[0]
-    #     self.User_Model.create(user)
-    #     self.browser.get(f"{self.url}/{user['username']}")
-    #     el_id = "games_list"
-    #     games_list = self.browser.find_element(By.ID, el_id)
-    #     games_list_games = games_list.find_elements(By.TAG_NAME, 'li')
-    #     self.assertTrue(len(games_list_games)==0, f"{el_id} should not have any games <li>")
-    #     print("test_game_links_0_games... test passed!")
+    def test_game_links_0_games(self):
+        user = self.valid_users[0]
+        self.User_Model.create(user)
+        self.browser.get(f"{self.url}/{user['username']}")
+        el_id = "games_list"
+        games_list = self.browser.find_element(By.ID, el_id)
+        games_list_games = games_list.find_elements(By.TAG_NAME, 'li')
+        self.assertTrue(len(games_list_games)==0, f"{el_id} should not have any games <li>")
+        print("test_game_links_0_games... test passed!")
     
     
-    # def test_game_username_DNE(self):
-    #     for i in range(1, len(self.valid_users)):
-    #         self.User_Model.create(self.valid_users[i])
+    def test_game_username_DNE(self):
+        for i in range(1, len(self.valid_users)):
+            self.User_Model.create(self.valid_users[i])
 
-    #     link = f"{self.url}/{self.valid_users[0]['username']}" # user DNE
-    #     self.browser.get(link)
+        link = f"{self.url}/{self.valid_users[0]['username']}" # user DNE
+        self.browser.get(link)
 
-    #     self.assertEqual(self.browser.title, "Yahtzee: Login", f"The page should redirect to login.html")
-    #     feedback_element = self.browser.find_element(By.ID, "feedback")
-    #     self.assertTrue(len(feedback_element.text)>10, "Substantial feedback should be provided.")
-    #     print("test_game_username_DNE... test passed!")
+        self.assertEqual(self.browser.title, "Yahtzee: Login", f"The page should redirect to login.html")
+        feedback_element = self.browser.find_element(By.ID, "feedback")
+        self.assertTrue(len(feedback_element.text)>10, "Substantial feedback should be provided.")
+        print("test_game_username_DNE... test passed!")
    
     
-    # def test_create_game_start_with_0_games(self):
-    #     user = self.valid_users[2]
-    #     self.User_Model.create(user)
-    #     link = f"{self.url}/{user['username']}" 
-    #     self.browser.get(link)
+    def test_create_game_start_with_0_games(self):
+        user = self.valid_users[2]
+        self.User_Model.create(user)
+        link = f"{self.url}/{user['username']}" 
+        self.browser.get(link)
 
-    #     new_game_name = self.valid_games[0]["name"]
-    #     self.enter_and_submit_user_info(new_game_name, "create")
-    #     el_id = "games_list"
-    #     games_list = self.browser.find_element(By.ID, el_id)
-    #     games_list_games = games_list.find_elements(By.TAG_NAME, 'li')
-    #     game_link = games_list_games[0].find_elements(By.TAG_NAME, 'a')
-    #     self.assertEqual(game_link[0].text, new_game_name, f"Link text should be {new_game_name}")
-    #     game_href = game_link[0].get_attribute("href")
-    #     link = f"/games/{new_game_name}/{user['username']}"
-    #     valid_game_link =  (game_href==link) or (game_href==f"http://127.0.0.1:8080{link}")
-    #     self.assertTrue(valid_game_link, f"game link href should be /games/{new_game_name}/{user['username']}")
-    #     delete_href = game_link[1].get_attribute("href")
-    #     link = f"/games/delete/{new_game_name}/{user['username']}"
-    #     valid_game_link =  (delete_href==link) or (delete_href==f"http://127.0.0.1:8080{link}")
-    #     self.assertTrue(valid_game_link, f"game link href should be /games/{new_game_name}/{user['username']}")
+        new_game_name = self.valid_games[0]["name"]
+        self.enter_and_submit_user_info(new_game_name, "create")
+        el_id = "games_list"
+        games_list = self.browser.find_element(By.ID, el_id)
+        games_list_games = games_list.find_elements(By.TAG_NAME, 'li')
+        game_link = games_list_games[0].find_elements(By.TAG_NAME, 'a')
+        self.assertEqual(game_link[0].text, new_game_name, f"Link text should be {new_game_name}")
+        game_href = game_link[0].get_attribute("href")
+        link = f"/games/{new_game_name}/{user['username']}"
+        valid_game_link =  (game_href==link) or (game_href==f"http://127.0.0.1:8080{link}")
+        self.assertTrue(valid_game_link, f"game link href should be /games/{new_game_name}/{user['username']}")
+        delete_href = game_link[1].get_attribute("href")
+        link = f"/games/delete/{new_game_name}/{user['username']}"
+        valid_game_link =  (delete_href==link) or (delete_href==f"http://127.0.0.1:8080{link}")
+        self.assertTrue(valid_game_link, f"game link href should be /games/{new_game_name}/{user['username']}")
 
-    #     #Check DB
-    #     game=self.Game_Model.get(game_name=new_game_name)
-    #     self.assertTrue(game, f"New game should exist in the DB")
+        #Check DB
+        game=self.Game_Model.get(game_name=new_game_name)
+        self.assertTrue(game, f"New game should exist in the DB")
 
-    #     print("test_create_game_start_with_0_games... test passed!")
+        print("test_create_game_start_with_0_games... test passed!")
     
     
-    # def test_create_game_start_with_4_games(self):
-    #     user = self.valid_users[2]
-    #     user=self.User_Model.create(user)["data"]
-    #     all_game_names=set()
-    #     for i in range(4):
-    #         new_game=self.Game_Model.create(self.valid_games[i])['data']
-    #         game_name=f"{new_game['name']}|{user['username']}"
-    #         self.Scorecard_Model.create(new_game["id"], user["id"], game_name)
-    #         all_game_names.add(self.valid_games[i]['name'])
-    #     link = f"{self.url}/{user['username']}" 
-    #     self.browser.get(link)
+    def test_create_game_start_with_4_games(self):
+        user = self.valid_users[2]
+        user=self.User_Model.create(user)["data"]
+        all_game_names=set()
+        for i in range(4):
+            new_game=self.Game_Model.create(self.valid_games[i])['data']
+            game_name=f"{new_game['name']}|{user['username']}"
+            self.Scorecard_Model.create(new_game["id"], user["id"], game_name)
+            all_game_names.add(self.valid_games[i]['name'])
+        link = f"{self.url}/{user['username']}" 
+        self.browser.get(link)
 
-    #     new_game_name = self.valid_games[4]["name"]
-    #     all_game_names.add(new_game_name)
-    #     self.enter_and_submit_user_info(new_game_name, "create")
+        new_game_name = self.valid_games[4]["name"]
+        all_game_names.add(new_game_name)
+        self.enter_and_submit_user_info(new_game_name, "create")
 
-    #     el_id = "games_list"
-    #     games_list = self.browser.find_element(By.ID, el_id)
-    #     games_list_games = games_list.find_elements(By.TAG_NAME, 'li')
-    #     self.assertEqual(len(games_list_games),5, f"{el_id} should have 5 game <li>")
+        el_id = "games_list"
+        games_list = self.browser.find_element(By.ID, el_id)
+        games_list_games = games_list.find_elements(By.TAG_NAME, 'li')
+        self.assertEqual(len(games_list_games),5, f"{el_id} should have 5 game <li>")
         
-    #     for game in games_list_games:
-    #         game_name=self.valid_games[i]['name']
-    #         game_link = game.find_elements(By.TAG_NAME, 'a')
-    #         game_name = game_link[0].text
-    #         self.assertTrue(game_name in all_game_names, f"{game_name} should be an actual game name.")
-    #         all_game_names.remove(game_name)
-    #         game_href = game_link[0].get_attribute("href")
-    #         link = f"/games/{game_name}/{user['username']}"
-    #         valid_game_link =  (game_href==link) or (game_href==f"http://127.0.0.1:8080{link}")
-    #         self.assertTrue(valid_game_link, f"game link href should be /games/{game_name}/{user['username']}")
-    #         delete_href = game_link[1].get_attribute("href")
-    #         link = f"/games/delete/{game_name}/{user['username']}"
-    #         valid_game_link =  (delete_href==link) or (delete_href==f"http://127.0.0.1:8080{link}")
-    #         self.assertTrue(valid_game_link, f"game link href should be /games/{game_name}/{user['username']}")
+        for game in games_list_games:
+            game_name=self.valid_games[i]['name']
+            game_link = game.find_elements(By.TAG_NAME, 'a')
+            game_name = game_link[0].text
+            self.assertTrue(game_name in all_game_names, f"{game_name} should be an actual game name.")
+            all_game_names.remove(game_name)
+            game_href = game_link[0].get_attribute("href")
+            link = f"/games/{game_name}/{user['username']}"
+            valid_game_link =  (game_href==link) or (game_href==f"http://127.0.0.1:8080{link}")
+            self.assertTrue(valid_game_link, f"game link href should be /games/{game_name}/{user['username']}")
+            delete_href = game_link[1].get_attribute("href")
+            link = f"/games/delete/{game_name}/{user['username']}"
+            valid_game_link =  (delete_href==link) or (delete_href==f"http://127.0.0.1:8080{link}")
+            self.assertTrue(valid_game_link, f"game link href should be /games/{game_name}/{user['username']}")
 
-    #     #Check DB
-    #     game=self.Game_Model.get(game_name=new_game_name)
-    #     self.assertTrue(game, f"New game should exist in the DB")
-    #     print("test_create_game_start_with_4_games... test passed!")
+        #Check DB
+        game=self.Game_Model.get(game_name=new_game_name)
+        self.assertTrue(game, f"New game should exist in the DB")
+        print("test_create_game_start_with_4_games... test passed!")
     
-    # def test_create_game_duplicate(self):
-    #     user = self.valid_users[1]
-    #     user=self.User_Model.create(user)["data"]
-    #     all_game_names=set()
-    #     for i in range(4):
-    #         new_game=self.Game_Model.create(self.valid_games[i])['data']
-    #         game_name=f"{new_game['name']}|{user['username']}"
-    #         self.Scorecard_Model.create(new_game["id"], user["id"], game_name)
-    #         all_game_names.add(self.valid_games[i]['name'])
-    #     link = f"{self.url}/{user['username']}" 
-    #     self.browser.get(link)
+    def test_create_game_duplicate(self):
+        user = self.valid_users[1]
+        user=self.User_Model.create(user)["data"]
+        all_game_names=set()
+        for i in range(4):
+            new_game=self.Game_Model.create(self.valid_games[i])['data']
+            game_name=f"{new_game['name']}|{user['username']}"
+            self.Scorecard_Model.create(new_game["id"], user["id"], game_name)
+            all_game_names.add(self.valid_games[i]['name'])
+        link = f"{self.url}/{user['username']}" 
+        self.browser.get(link)
 
-    #     self.enter_and_submit_user_info(self.valid_games[2]['name'], "create")
+        self.enter_and_submit_user_info(self.valid_games[2]['name'], "create")
 
-    #     feedback_element = self.browser.find_element(By.ID, "feedback")
-    #     self.assertTrue(len(feedback_element.text)>10, "Substantial feedback should be provided.")
+        feedback_element = self.browser.find_element(By.ID, "feedback")
+        self.assertTrue(len(feedback_element.text)>10, "Substantial feedback should be provided.")
 
-    #     el_id = "games_list"
-    #     games_list = self.browser.find_element(By.ID, el_id)
-    #     games_list_games = games_list.find_elements(By.TAG_NAME, 'li')
-    #     self.assertEqual(len(games_list_games),4, f"{el_id} should have original 4 game <li>")
+        el_id = "games_list"
+        games_list = self.browser.find_element(By.ID, el_id)
+        games_list_games = games_list.find_elements(By.TAG_NAME, 'li')
+        self.assertEqual(len(games_list_games),4, f"{el_id} should have original 4 game <li>")
 
-    #     #Check DB
-    #     games=self.Game_Model.get_all()["data"]
-    #     self.assertTrue(len(games)==4, f"Only original 4 games should exist in the DB")
-    #     print("test_create_game_duplicate... test passed!")
+        #Check DB
+        games=self.Game_Model.get_all()["data"]
+        self.assertTrue(len(games)==4, f"Only original 4 games should exist in the DB")
+        print("test_create_game_duplicate... test passed!")
     
-    # def test_login_user_with_multiple_games(self):
-    #     user = self.valid_users[1]
-    #     user=self.User_Model.create(user)["data"]
-    #     all_game_names=set()
-    #     for i in range(4):
-    #         new_game=self.Game_Model.create(self.valid_games[i])['data']
-    #         game_name=f"{new_game['name']}|{user['username']}"
-    #         self.Scorecard_Model.create(new_game["id"], user["id"], game_name)
-    #         all_game_names.add(self.valid_games[i]['name'])
-    #     self.browser.get('http://127.0.0.1:8080')
+    def test_login_user_with_multiple_games(self):
+        user = self.valid_users[1]
+        user=self.User_Model.create(user)["data"]
+        all_game_names=set()
+        for i in range(4):
+            new_game=self.Game_Model.create(self.valid_games[i])['data']
+            game_name=f"{new_game['name']}|{user['username']}"
+            self.Scorecard_Model.create(new_game["id"], user["id"], game_name)
+            all_game_names.add(self.valid_games[i]['name'])
+        self.browser.get('http://127.0.0.1:8080')
 
-    #     username_element = self.browser.find_element(By.ID, "username_input")
-    #     username_element.clear()
-    #     username_element.send_keys(user['username'])
-    #     password_element = self.browser.find_element(By.ID, "password_input")
-    #     password_element.clear()
-    #     password_element.send_keys(user['password'])
-    #     submit_button=self.browser.find_element(By.ID, 'login_submit')
-    #     submit_button.click()
+        username_element = self.browser.find_element(By.ID, "username_input")
+        username_element.clear()
+        username_element.send_keys(user['username'])
+        password_element = self.browser.find_element(By.ID, "password_input")
+        password_element.clear()
+        password_element.send_keys(user['password'])
+        submit_button=self.browser.find_element(By.ID, 'login_submit')
+        submit_button.click()
 
-    #     el_id = "games_list"
-    #     games_list = self.browser.find_element(By.ID, el_id)
-    #     games_list_games = games_list.find_elements(By.TAG_NAME, 'li')
-    #     self.assertEqual(len(games_list_games), 4, f"{el_id} should have 4 game <li>")
+        el_id = "games_list"
+        games_list = self.browser.find_element(By.ID, el_id)
+        games_list_games = games_list.find_elements(By.TAG_NAME, 'li')
+        self.assertEqual(len(games_list_games), 4, f"{el_id} should have 4 game <li>")
         
-    #     for game in games_list_games:
-    #         game_link = game.find_elements(By.TAG_NAME, 'a')
-    #         game_name = game_link[0].text
-    #         self.assertTrue(game_name in all_game_names, f"{game_name} should be an actual game name.")
-    #         all_game_names.remove(game_name)
-    #         game_href = game_link[0].get_attribute("href")
-    #         link = f"/games/{game_name}/{user['username']}"
-    #         valid_game_link =  (game_href==link) or (game_href==f"http://127.0.0.1:8080{link}")
-    #         self.assertTrue(valid_game_link, f"game link href should be /games/{game_name}/{user['username']}")
-    #         delete_href = game_link[1].get_attribute("href")
-    #         link = f"/games/delete/{game_name}/{user['username']}"
-    #         valid_game_link =  (delete_href==link) or (delete_href==f"http://127.0.0.1:8080{link}")
-    #         self.assertTrue(valid_game_link, f"game link href should be /games/{game_name}/{user['username']}")
+        for game in games_list_games:
+            game_link = game.find_elements(By.TAG_NAME, 'a')
+            game_name = game_link[0].text
+            self.assertTrue(game_name in all_game_names, f"{game_name} should be an actual game name.")
+            all_game_names.remove(game_name)
+            game_href = game_link[0].get_attribute("href")
+            link = f"/games/{game_name}/{user['username']}"
+            valid_game_link =  (game_href==link) or (game_href==f"http://127.0.0.1:8080{link}")
+            self.assertTrue(valid_game_link, f"game link href should be /games/{game_name}/{user['username']}")
+            delete_href = game_link[1].get_attribute("href")
+            link = f"/games/delete/{game_name}/{user['username']}"
+            valid_game_link =  (delete_href==link) or (delete_href==f"http://127.0.0.1:8080{link}")
+            self.assertTrue(valid_game_link, f"game link href should be /games/{game_name}/{user['username']}")
 
-    #     print("test_login_user_with_multiple_games... test passed!")
+        print("test_login_user_with_multiple_games... test passed!")
         
     
     # def test_delete_game(self):
