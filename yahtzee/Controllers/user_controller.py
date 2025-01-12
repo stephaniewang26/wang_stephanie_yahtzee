@@ -15,6 +15,8 @@ Games = Game_Model.Game(DB_location, "games")
 import html_titles
 titles_dict = html_titles.get_titles()
 
+import game_controller
+
 def users():
     print(f"request.url={request.url}")
 
@@ -45,7 +47,9 @@ def users():
                 for game in get_all_packet["data"]:
                     all_game_names.append(game["name"])
 
-                return render_template('user_games.html', title=titles_dict["user_games"], games_list=all_game_names, username=create_packet["data"]["username"])
+                high_scores_list = game_controller.return_high_scores(create_packet["data"]["username"])
+
+                return render_template('user_games.html', high_scores_list=high_scores_list, title=titles_dict["user_games"], games_list=all_game_names, username=create_packet["data"]["username"])
             #if not, then use feedback from error message and template it in ✅
             else:
                 return render_template('user_details.html', feedback=create_packet["data"], btn_context="create", title=titles_dict["user_details"])

@@ -29,7 +29,9 @@ def games_username(username):
     for game in get_all_packet["data"]:
         all_game_names.append(game["name"])
 
-    return render_template('user_games.html', title=titles_dict["user_games"], username=username, games_list=all_game_names)
+    high_scores_list = return_high_scores(username)
+
+    return render_template('user_games.html', high_scores_list=high_scores_list,title=titles_dict["user_games"], username=username, games_list=all_game_names)
 
 def games():
     print(f"request.url={request.url}")
@@ -49,11 +51,54 @@ def games():
 
     if create_packet["status"] == "success":
         Scorecards.create(game_id=str(create_packet["data"]["id"]), user_id=user_get_packet["data"]["id"], name=f"{game_name}|{username}")
-        return render_template('user_games.html', title=titles_dict["user_games"], games_list=all_game_names, username=username, feedback="Game successfully created!")
+        
+        high_scores_list = return_high_scores(username)
+        
+        return render_template('user_games.html', high_scores_list=high_scores_list, title=titles_dict["user_games"], games_list=all_game_names, username=username, feedback="Game successfully created!")
     else:
-        return render_template('user_games.html', title=titles_dict["user_games"], games_list=all_game_names, username=username,feedback=create_packet["data"])
+        high_scores_list = return_high_scores(username)
+        return render_template('user_games.html', high_scores_list=high_scores_list, title=titles_dict["user_games"], games_list=all_game_names, username=username,feedback=create_packet["data"])
 
 def games_game_name_username(game_name,username):
     print(f"request.url={request.url}")
     return render_template('game.html', title=titles_dict["game"]+username,game_name=game_name,username=username)
     
+def games_delete_game_name_username(game_name,username):
+    print(f"request.url={request.url}")
+
+    scorecards_get_packet_data = (Scorecards.get(name=f"{game_name}|{username}"))["data"]
+
+    remove_packet = Games.remove(game_name=game_name)
+
+    get_all_packet = Games.get_all()
+    all_game_names = []
+    for game in get_all_packet["data"]:
+        all_game_names.append(game["name"])
+
+    high_scores_list = return_high_scores(username)
+
+    if remove_packet["status"] == "success":
+        Scorecards.remove(id=scorecards_get_packet_data["id"])
+        return render_template('user_games.html', high_scores_list=high_scores_list, title=titles_dict["user_games"], games_list=all_game_names, username=username, feedback="Game successfully removed!")
+    else:
+        return render_template('user_games.html', high_scores_list=high_scores_list, title=titles_dict["user_games"], games_list=all_game_names, username=username,feedback=remove_packet["data"])
+    
+def return_high_scores(username):
+    print(f"request.url={request.url}")
+
+    all_scores_list = []
+    scorecards_get_all_packet_data = Scorecards.get_all()["data"]
+    # game_names_list = Scorecards.get_all_user_game_names(username)
+
+    for scorecard in scorecards_get_all_packet_data:
+        # print((Games.get(id=scorecard["game_id"]))["data"]["name"])
+        print(Games.get(id=int(scorecard["game_id"])))
+        if Games.get(id=int(scorecard["game_id"]))["status"]=="success":
+            current_game_name = (Games.get(id=int(scorecard["game_id"])))["data"]["name"]
+
+            if scorecard["name"]==(f"{current_game_name}|{username}"):
+                all_scores_list.append((current_game_name,(Scorecards.tally_score(scorecard["categories"]))))
+
+    all_scores_list.sort(key=lambda x: x[1],reverse=True)
+
+    return(all_scores_list)

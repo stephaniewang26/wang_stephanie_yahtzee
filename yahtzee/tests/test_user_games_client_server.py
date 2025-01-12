@@ -423,50 +423,50 @@ class Basic_User_Games_Tests(unittest.TestCase):
         print("test_login_user_with_multiple_games... test passed!")
         
     
-    # def test_delete_game(self):
-    #     user = self.valid_users[2]
-    #     user=self.User_Model.create(user)["data"]
-    #     all_game_names=list()
-    #     for i in range(5):
-    #         new_game=self.Game_Model.create(self.valid_games[i])['data']
-    #         game_name=f"{new_game['name']}|{user['username']}"
-    #         self.Scorecard_Model.create(new_game["id"], user["id"], game_name)
-    #         all_game_names.append(self.valid_games[i]['name'])
+    def test_delete_game(self):
+        user = self.valid_users[2]
+        user=self.User_Model.create(user)["data"]
+        all_game_names=list()
+        for i in range(5):
+            new_game=self.Game_Model.create(self.valid_games[i])['data']
+            game_name=f"{new_game['name']}|{user['username']}"
+            self.Scorecard_Model.create(new_game["id"], user["id"], game_name)
+            all_game_names.append(self.valid_games[i]['name'])
 
-    #     self.browser.get(f"{self.url}/{user['username']}")
+        self.browser.get(f"{self.url}/{user['username']}")
 
-    #     el_id = "games_list"
-    #     games_list = self.browser.find_element(By.ID, el_id)
-    #     games_list_games = games_list.find_elements(By.TAG_NAME, 'li')
-    #     self.assertEqual(len(games_list_games), 5, f"{el_id} should have 5 game <li>")
+        el_id = "games_list"
+        games_list = self.browser.find_element(By.ID, el_id)
+        games_list_games = games_list.find_elements(By.TAG_NAME, 'li')
+        self.assertEqual(len(games_list_games), 5, f"{el_id} should have 5 game <li>")
         
-    #     game_name_to_delete = all_game_names[len(all_game_names)-2] #Delete 2nd from last game
-    #     print("game_name_to_delete",game_name_to_delete)
+        game_name_to_delete = all_game_names[len(all_game_names)-2] #Delete 2nd from last game
+        print("game_name_to_delete",game_name_to_delete)
 
-    #     for game in games_list_games:
-    #         game_link = game.find_elements(By.TAG_NAME, 'a')
-    #         game_name = game_link[0].text
-    #         if game_name == game_name_to_delete:
-    #             delete_href = game_link[1]
-    #             delete_href.click()
-    #             break
+        for game in games_list_games:
+            game_link = game.find_elements(By.TAG_NAME, 'a')
+            game_name = game_link[0].text
+            if game_name == game_name_to_delete:
+                delete_href = game_link[1]
+                delete_href.click()
+                break
         
-    #     el_id = "games_list"
-    #     games_list = self.browser.find_element(By.ID, el_id)
-    #     games_list_games = games_list.find_elements(By.TAG_NAME, 'li')
-    #     self.assertEqual(len(games_list_games), 4, f"{el_id} should have 5 game <li>")
+        el_id = "games_list"
+        games_list = self.browser.find_element(By.ID, el_id)
+        games_list_games = games_list.find_elements(By.TAG_NAME, 'li')
+        self.assertEqual(len(games_list_games), 4, f"{el_id} should have 5 game <li>")
 
-    #     for game in games_list_games:
-    #         game_link = game.find_elements(By.TAG_NAME, 'a')
-    #         game_name = game_link[0].text
-    #         self.assertNotEqual(game_name, game_name_to_delete, f"{game_name_to_delete} should not have a game <li>")
+        for game in games_list_games:
+            game_link = game.find_elements(By.TAG_NAME, 'a')
+            game_name = game_link[0].text
+            self.assertNotEqual(game_name, game_name_to_delete, f"{game_name_to_delete} should not have a game <li>")
 
-    #     result = self.Game_Model.exists(name=game_name_to_delete)
-    #     self.assertEqual(result['status'], "success", f".exists should return success for the deleted game name")
-    #     self.assertFalse(result['data'],  f".exists should return false for the deleted game name")
+        result = self.Game_Model.exists(game_name=game_name_to_delete)
+        self.assertEqual(result['status'], "success", f".exists should return success for the deleted game name")
+        self.assertFalse(result['data'],  f".exists should return false for the deleted game name")
 
-    #     # check for deleting associated scorecards
-    #     print("test_delete_game... test passed!")
+        # check for deleting associated scorecards
+        print("test_delete_game... test passed!")
 
     # '''
     # def test_join_game(self):
@@ -480,64 +480,64 @@ class Basic_User_Games_Tests(unittest.TestCase):
     #     print("test_join_game_DNE... test passed!")
     # '''
     
-    # def test_player_scores_1_game(self):
-    #     user = self.valid_users[1]
-    #     user=self.User_Model.create(user)["data"]
-    #     new_game=self.Game_Model.create(self.valid_games[2])['data']
-    #     game_name=f"{new_game['name']}|{user['username']}"
-    #     new_scorecard=self.Scorecard_Model.create(new_game["id"], user["id"], game_name)['data']
-    #     updated_card = self.valid_scorecards[0]
-    #     self.Scorecard_Model.update(new_scorecard['id'], new_scorecard['name'], updated_card['categories'])
+    def test_player_scores_1_game(self):
+        user = self.valid_users[1]
+        user=self.User_Model.create(user)["data"]
+        new_game=self.Game_Model.create(self.valid_games[2])['data']
+        game_name=f"{new_game['name']}|{user['username']}"
+        new_scorecard=self.Scorecard_Model.create(new_game["id"], user["id"], game_name)['data']
+        updated_card = self.valid_scorecards[0]
+        self.Scorecard_Model.update(new_scorecard['id'], new_scorecard['name'], updated_card['categories'])
         
-    #     self.browser.get(f"{self.url}/{user['username']}")
+        self.browser.get(f"{self.url}/{user['username']}")
 
-    #     el_id = "high_scores_list"
-    #     games_list = self.browser.find_element(By.ID, el_id)
-    #     games_list_games = games_list.find_elements(By.TAG_NAME, 'li')
-    #     self.assertEqual(len(games_list_games), 1, f"{el_id} should have 1 high score <li>")
-    #     text = games_list_games[0].text
-    #     self.assertEqual(text, f"{new_game['name']} : {updated_card['score']}", f"The high score label should be: {new_game['name']} : {updated_card['score']}")
-    #     print("test_player_scores_1_game... test passed!")
+        el_id = "high_scores_list"
+        games_list = self.browser.find_element(By.ID, el_id)
+        games_list_games = games_list.find_elements(By.TAG_NAME, 'li')
+        self.assertEqual(len(games_list_games), 1, f"{el_id} should have 1 high score <li>")
+        text = games_list_games[0].text
+        self.assertEqual(text, f"{new_game['name']} : {updated_card['score']}", f"The high score label should be: {new_game['name']} : {updated_card['score']}")
+        print("test_player_scores_1_game... test passed!")
 
-    # def test_player_scores_many_games(self):
-    #     user = self.valid_users[1]
-    #     user=self.User_Model.create(user)["data"]
+    def test_player_scores_many_games(self):
+        user = self.valid_users[1]
+        user=self.User_Model.create(user)["data"]
 
-    #     all_score_labels = []
-    #     for i in range(len(self.valid_scorecards)):
-    #         new_game=self.Game_Model.create(self.valid_games[i])['data']
-    #         game_name=f"{new_game['name']}|{user['username']}"
-    #         valid_card= self.valid_scorecards[i]
-    #         new_scorecard=self.Scorecard_Model.create(new_game["id"], user["id"], game_name)['data']
-    #         self.Scorecard_Model.update(new_scorecard['id'], new_scorecard['name'], valid_card['categories'])
-    #         all_score_labels.append(f"{new_game['name']} : {valid_card['score']}")
+        all_score_labels = []
+        for i in range(len(self.valid_scorecards)):
+            new_game=self.Game_Model.create(self.valid_games[i])['data']
+            game_name=f"{new_game['name']}|{user['username']}"
+            valid_card= self.valid_scorecards[i]
+            new_scorecard=self.Scorecard_Model.create(new_game["id"], user["id"], game_name)['data']
+            self.Scorecard_Model.update(new_scorecard['id'], new_scorecard['name'], valid_card['categories'])
+            all_score_labels.append(f"{new_game['name']} : {valid_card['score']}")
         
-    #     self.browser.get(f"{self.url}/{user['username']}")
+        self.browser.get(f"{self.url}/{user['username']}")
 
-    #     all_score_labels.sort(key=lambda label: int(label.split(" : ")[1]), reverse=True)
+        all_score_labels.sort(key=lambda label: int(label.split(" : ")[1]), reverse=True)
 
-    #     el_id = "high_scores_list"
-    #     games_list = self.browser.find_element(By.ID, el_id)
-    #     games_list_games = games_list.find_elements(By.TAG_NAME, 'li')
-    #     self.assertEqual(len(games_list_games), len(all_score_labels), f"{el_id} should have {len(all_score_labels)} high score <li>")
-    #     for i in range(len(games_list_games)):
-    #         score_li_el = games_list_games[i]
-    #         text = score_li_el.text
-    #         self.assertEqual(text, all_score_labels[i], f"The sorted high score label should be: {all_score_labels[i]}")
+        el_id = "high_scores_list"
+        games_list = self.browser.find_element(By.ID, el_id)
+        games_list_games = games_list.find_elements(By.TAG_NAME, 'li')
+        self.assertEqual(len(games_list_games), len(all_score_labels), f"{el_id} should have {len(all_score_labels)} high score <li>")
+        for i in range(len(games_list_games)):
+            score_li_el = games_list_games[i]
+            text = score_li_el.text
+            self.assertEqual(text, all_score_labels[i], f"The sorted high score label should be: {all_score_labels[i]}")
         
-    #     print("test_player_scores_many_games... test passed!")
+        print("test_player_scores_many_games... test passed!")
 
     
-    # def test_player_scores_0_games(self):
-    #     user = self.valid_users[1]
-    #     user=self.User_Model.create(user)["data"]
-    #     self.browser.get(f"{self.url}/{user['username']}")
+    def test_player_scores_0_games(self):
+        user = self.valid_users[1]
+        user=self.User_Model.create(user)["data"]
+        self.browser.get(f"{self.url}/{user['username']}")
 
-    #     el_id = "high_scores_list"
-    #     games_list = self.browser.find_element(By.ID, el_id)
-    #     games_list_games = games_list.find_elements(By.TAG_NAME, 'li')
-    #     self.assertTrue(len(games_list_games)==0, f"There should be no high score <li> elements")
-    #     print("test_player_scores_0_games... test passed!")
+        el_id = "high_scores_list"
+        games_list = self.browser.find_element(By.ID, el_id)
+        games_list_games = games_list.find_elements(By.TAG_NAME, 'li')
+        self.assertTrue(len(games_list_games)==0, f"There should be no high score <li> elements")
+        print("test_player_scores_0_games... test passed!")
    
 
 if __name__ == '__main__':

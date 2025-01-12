@@ -21,7 +21,9 @@
 </form>
 <h1>High Scores</h1>
 <ol id="high_scores_list">
-    <li>game_name: 300</li>
+    {% for tup in high_scores_list %}
+    <li>{{tup[0]}} : {{tup[1]}}</li>
+    {% endfor %}
 </ol>
 {% include 'partial/footer.html' %}
 </center>

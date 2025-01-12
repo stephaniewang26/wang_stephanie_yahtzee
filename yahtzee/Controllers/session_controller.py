@@ -16,6 +16,8 @@ Games = Game_Model.Game(DB_location, "games")
 import html_titles
 titles_dict = html_titles.get_titles()
 
+import game_controller
+
 def index():
     print(f"request.url={request.url}")
     return render_template('login.html', title=titles_dict["login"])
@@ -35,6 +37,9 @@ def login():
         all_game_names = []
         for game in get_all_packet["data"]:
             all_game_names.append(game["name"])
-        return render_template('user_games.html', games_list=all_game_names, username=username, password=password, title=titles_dict["user_games"])
+
+        high_scores_list = game_controller.return_high_scores(username)
+
+        return render_template('user_games.html', high_scores_list=high_scores_list, games_list=all_game_names, username=username, password=password, title=titles_dict["user_games"])
     else:
         return render_template('login.html',feedback="Incorrect password.",title=titles_dict["login"])
