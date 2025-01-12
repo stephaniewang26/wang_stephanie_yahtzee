@@ -68,7 +68,7 @@ class Basic_Login_Tests(unittest.TestCase):
         self.user_table_name = "users"
         self.game_table_name = "games"
         self.scorecard_table_name = "scorecard"
-        wipe_and_clean_tables(self.DB_location) #🆘🆘 got rid of the other arguments 
+        wipe_and_clean_tables(self.DB_location, self.user_table_name, self.game_table_name, self.scorecard_table_name)
         self.User_Model = User_Model.User(self.DB_location, self.user_table_name)
 
         self.users={} #add 4 users and keep track of their ids
