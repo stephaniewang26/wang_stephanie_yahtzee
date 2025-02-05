@@ -1,6 +1,7 @@
 {% include 'partial/header.html' %}
 {% include 'partial/navbar.html' %}
 <center>
+<br>
 <h1>{{username}} Games</h1>
 <section id="feedback">{{feedback}}</section>
 <ol id="games_list">
@@ -12,13 +13,12 @@
 <form action="/games" method="POST">
     <label for="game_name_input">Game name:</label>
     <input type="text" id="game_name_input" name="game_name">
-    <br>
     <input type="submit" value="Create" id="create_submit">
+    <input type="submit" value="Join" id="join_submit" formaction="/games/join">
     <input type="hidden" id="hidden_username" name="username" value={{username}}>
 </form>
-<form action="🆘🆘" method="GET">
-    <input type="submit" value="Join" id="join_submit">
-</form>
+<br>
+<br>
 <h1>High Scores</h1>
 <ol id="high_scores_list">
     {% for tup in high_scores_list %}

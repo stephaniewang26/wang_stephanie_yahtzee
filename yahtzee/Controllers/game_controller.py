@@ -102,3 +102,17 @@ def return_high_scores(username):
     all_scores_list.sort(key=lambda x: x[1],reverse=True)
 
     return(all_scores_list)
+
+def games_join():
+    print(f"request.url={request.url}")
+    game_name = request.form.get('game_name')
+    username = request.form.get('username')
+
+    exists_packet = Games.create(game_name=game_name)
+    #check if game exists
+    if exists_packet["data"] == True:
+        #check if user has already joined through scorecards
+        if 
+        Scorecards.create(game_id=str(create_packet["data"]["id"]), user_id=user_get_packet["data"]["id"], name=f"{game_name}|{username}")
+
+    return render_template('user_games.html', title=titles_dict["user_games"])
