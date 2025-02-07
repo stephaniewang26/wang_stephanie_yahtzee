@@ -14,7 +14,7 @@
     <label for="game_name_input">Game name:</label>
     <input type="text" id="game_name_input" name="game_name">
     <input type="submit" value="Create" id="create_submit">
-    <input type="submit" value="Join" id="join_submit" formaction="/games/join">
+    <input type="button" value="Join" id="join_submit">
     <input type="hidden" id="hidden_username" name="username" value={{username}}>
 </form>
 <br>
@@ -25,5 +25,32 @@
     <li>{{tup[0]}} : {{tup[1]}}</li>
     {% endfor %}
 </ol>
+
 {% include 'partial/footer.html' %}
+
+<SCRIPT>
+    document.getElementById("join_submit").addEventListener('click', joinGame);
+    async function joinGame(event){
+        
+        const link = "http://127.0.0.1:8080/games/join";
+        
+        const response = await fetch(link, {
+            method:"POST",
+            body: JSON.stringify({username: document.getElementById("hidden_username").innerHTML}),
+        })
+       
+        // try {
+        //     const response = await fetch(link);
+        //     if (!response.ok) {
+        //         throw new Error(`Response status: ${response.status}`);
+        //     }
+
+        //     const json = await response.json();
+        //     console.log(json);
+        // } catch (error) {
+        //     console.error(error.message);
+        // }
+        // console.log("hello")
+    }
+</SCRIPT>
 </center>

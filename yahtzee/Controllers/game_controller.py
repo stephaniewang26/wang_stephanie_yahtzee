@@ -108,11 +108,21 @@ def games_join():
     game_name = request.form.get('game_name')
     username = request.form.get('username')
 
-    exists_packet = Games.create(game_name=game_name)
+    game_exists_packet = Games.exists(game_name=game_name)
     #check if game exists
-    if exists_packet["data"] == True:
+    if game_exists_packet["data"] == True:
         #check if user has already joined through scorecards
-        if 
-        Scorecards.create(game_id=str(create_packet["data"]["id"]), user_id=user_get_packet["data"]["id"], name=f"{game_name}|{username}")
-
-    return render_template('user_games.html', title=titles_dict["user_games"])
+        game_usernames_list = (Scorecards.get_all_game_usernames(game_name=game_name))["data"]
+        if username in game_usernames_list:
+            return render_template('user_games.html', title=titles_dict["user_games"],feedback="User has already joined this game!")
+        #check if there are too many players
+        
+        #successful join
+        else:
+            #client uses the content of the json object to update the list of games on the page
+            game_get_packet = Games.get(game_name=game_name)
+            user_get_packet = Users.get(username=username)
+            Scorecards.create(game_id=str(game_get_packet["data"]["id"]), user_id=user_get_packet["data"]["id"], name=f"{game_name}|{username}")
+    else:
+        return render_template('user_games.html', title=titles_dict["user_games"], feedback="Game already exists!")
+    
