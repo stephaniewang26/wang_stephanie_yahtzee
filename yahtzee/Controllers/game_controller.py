@@ -17,6 +17,15 @@ Users = User_Model.User(DB_location, "users")
 import html_titles
 titles_dict = html_titles.get_titles()
 
+def get_user_game_names(username):
+    get_all_packet = Scorecards.get_all_user_game_names(username=username)
+    # print("get all packet",get_all_packet)
+    all_game_names = []
+    for game in get_all_packet["data"]:
+        all_game_names.append(game)
+
+    return all_game_names
+
 def games_username(username):
     print(f"request.url={request.url}")
 
@@ -24,10 +33,7 @@ def games_username(username):
     if user_exists_packet["data"]==False:
         return render_template('login.html',feedback="That user does not exist!",title=titles_dict["login"])
 
-    get_all_packet = Games.get_all()
-    all_game_names = []
-    for game in get_all_packet["data"]:
-        all_game_names.append(game["name"])
+    all_game_names = get_user_game_names(username)
 
     high_scores_list = return_high_scores(username)
 
@@ -40,23 +46,20 @@ def games():
 
     create_packet = Games.create({"name":game_name})
 
-    get_all_packet = Games.get_all()
-    all_game_names = []
-    for game in get_all_packet["data"]:
-        all_game_names.append(game["name"])
-
     # print(all_game_names)
     user_get_packet = Users.get(username=username)
     print(user_get_packet)
 
+
     if create_packet["status"] == "success":
         Scorecards.create(game_id=str(create_packet["data"]["id"]), user_id=user_get_packet["data"]["id"], name=f"{game_name}|{username}")
-        
+        all_game_names = get_user_game_names(username)
         high_scores_list = return_high_scores(username)
         
         return render_template('user_games.html', high_scores_list=high_scores_list, title=titles_dict["user_games"], games_list=all_game_names, username=username, feedback="Game successfully created!")
     else:
         high_scores_list = return_high_scores(username)
+        all_game_names = get_user_game_names(username)
         return render_template('user_games.html', high_scores_list=high_scores_list, title=titles_dict["user_games"], games_list=all_game_names, username=username,feedback=create_packet["data"])
 
 def games_game_name_username(game_name,username):
@@ -67,20 +70,22 @@ def games_delete_game_name_username(game_name,username):
     print(f"request.url={request.url}")
 
     scorecards_get_packet_data = (Scorecards.get(name=f"{game_name}|{username}"))["data"]
+    print(scorecards_get_packet_data)
 
     remove_packet = Games.remove(game_name=game_name)
-
-    get_all_packet = Games.get_all()
-    all_game_names = []
-    for game in get_all_packet["data"]:
-        all_game_names.append(game["name"])
 
     high_scores_list = return_high_scores(username)
 
     if remove_packet["status"] == "success":
-        Scorecards.remove(id=scorecards_get_packet_data["id"])
+        # need to get all ids of scorecards associated with the game and then for loop delete them
+        all_game_scorecards = Scorecards.get_all_game_scorecards(game_name=game_name)["data"]
+        for scorecard in all_game_scorecards:
+            Scorecards.remove(id=scorecard["id"])
+
+        all_game_names = get_user_game_names(username)
         return render_template('user_games.html', high_scores_list=high_scores_list, title=titles_dict["user_games"], games_list=all_game_names, username=username, feedback="Game successfully removed!")
     else:
+        all_game_names = get_user_game_names(username)
         return render_template('user_games.html', high_scores_list=high_scores_list, title=titles_dict["user_games"], games_list=all_game_names, username=username,feedback=remove_packet["data"])
     
 def return_high_scores(username):
@@ -105,8 +110,8 @@ def return_high_scores(username):
 
 def games_join():
     print(f"request.url={request.url}")
-    game_name = request.form.get('game_name')
-    username = request.form.get('username')
+    game_name = (request.json.get("game_name"))
+    username = (request.json.get("username"))
 
     game_exists_packet = Games.exists(game_name=game_name)
     #check if game exists
@@ -114,15 +119,18 @@ def games_join():
         #check if user has already joined through scorecards
         game_usernames_list = (Scorecards.get_all_game_usernames(game_name=game_name))["data"]
         if username in game_usernames_list:
-            return render_template('user_games.html', title=titles_dict["user_games"],feedback="User has already joined this game!")
+            return {"status":"error","data":"User has already joined this game!"}
         #check if there are too many players
-        
+        elif len(game_usernames_list) == 4:
+            return {"status":"error","data":"This game is full!"}
         #successful join
         else:
             #client uses the content of the json object to update the list of games on the page
             game_get_packet = Games.get(game_name=game_name)
             user_get_packet = Users.get(username=username)
             Scorecards.create(game_id=str(game_get_packet["data"]["id"]), user_id=user_get_packet["data"]["id"], name=f"{game_name}|{username}")
+            all_game_names = get_user_game_names(username)
+            return {"status":"success","data":"Successfully joined game!","games_list":all_game_names}
     else:
-        return render_template('user_games.html', title=titles_dict["user_games"], feedback="Game already exists!")
+        return {"status":"error","data":"Game does not exist!"}
     

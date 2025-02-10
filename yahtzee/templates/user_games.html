@@ -33,24 +33,27 @@
     async function joinGame(event){
         
         const link = "http://127.0.0.1:8080/games/join";
-        
-        const response = await fetch(link, {
-            method:"POST",
-            body: JSON.stringify({username: document.getElementById("hidden_username").innerHTML}),
-        })
        
-        // try {
-        //     const response = await fetch(link);
-        //     if (!response.ok) {
-        //         throw new Error(`Response status: ${response.status}`);
-        //     }
+        try {
+            let username = (document.getElementById("hidden_username").value)
+            let game_name = (document.getElementById("game_name_input").value)
+            const response = await fetch(link, {
+            method:"POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({username: document.getElementById("hidden_username").value, game_name: document.getElementById("game_name_input").value}),
+            })
 
-        //     const json = await response.json();
-        //     console.log(json);
-        // } catch (error) {
-        //     console.error(error.message);
-        // }
-        // console.log("hello")
+            const json = await response.json();
+            document.getElementById("feedback").innerHTML=json["data"]
+
+            let current_games_list = (document.getElementById("games_list").innerHTML)
+            let new_game_entry = `<li><a href="/games/mygame/${username}">${game_name}</a> <a href="/games/delete/mygame/${username}">Delete</a></li>`
+            document.getElementById("games_list").innerHTML = `${current_games_list} ${new_game_entry}`
+            
+            console.log(json);
+        } catch (error) {
+            console.error(error.message);
+        }
     }
 </SCRIPT>
 </center>

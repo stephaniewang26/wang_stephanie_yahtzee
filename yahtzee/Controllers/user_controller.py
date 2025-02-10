@@ -8,9 +8,11 @@ import os
 
 from Models import User_Model
 from Models import Game_Model
+from Models import Scorecard_Model
 DB_location=f"{os.getcwd()}/yahtzee/Models/yahtzeeDB.db"
 Users = User_Model.User(DB_location, "users")
 Games = Game_Model.Game(DB_location, "games")
+Scorecards = Scorecard_Model.Scorecard(DB_location, scorecard_table_name="scorecard", user_table_name="users", game_table_name="games")
 
 import html_titles
 titles_dict = html_titles.get_titles()
@@ -42,10 +44,7 @@ def users():
             create_packet = Users.create(inputted_info)
             #act depending on if it returns success/error --> if success, then direct to user_games ✅
             if create_packet["status"] == "success":
-                get_all_packet = Games.get_all()
-                all_game_names = []
-                for game in get_all_packet["data"]:
-                    all_game_names.append(game["name"])
+                all_game_names = game_controller.get_user_game_names(username=create_packet["data"]["username"])
 
                 high_scores_list = game_controller.return_high_scores(create_packet["data"]["username"])
 
