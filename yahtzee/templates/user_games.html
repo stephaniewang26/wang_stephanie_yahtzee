@@ -47,9 +47,11 @@
             document.getElementById("feedback").innerHTML=json["data"]
 
             let current_games_list = (document.getElementById("games_list").innerHTML)
-            let new_game_entry = `<li><a href="/games/mygame/${username}">${game_name}</a> <a href="/games/delete/mygame/${username}">Delete</a></li>`
-            document.getElementById("games_list").innerHTML = `${current_games_list} ${new_game_entry}`
-            
+            if (json["status"] != "error"){
+                let new_game_entry = `<li><a href="/games/mygame/${username}">${game_name}</a> <a href="/games/delete/mygame/${username}">Delete</a></li>`
+                document.getElementById("games_list").innerHTML = `${current_games_list} ${new_game_entry}`
+            }
+
             console.log(json);
         } catch (error) {
             console.error(error.message);
