@@ -134,3 +134,13 @@ def games_join():
     else:
         return {"status":"error","data":"Game does not exist!"}
     
+def games_data_game_name(game_name):
+    print(f"request.url={request.url}")
+    game_exists_packet = Games.exists(game_name=game_name)
+    #check if game exists
+    if game_exists_packet["data"] == True:
+        #check if user has already joined through scorecards
+        game_usernames_list = (Scorecards.get_all_game_usernames(game_name=game_name))["data"]
+        return {"status":"success","usernames_list":game_usernames_list, "game_name":game_name}
+    else:
+        return {"status":"error","data":"Game does not exist!"}
