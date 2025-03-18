@@ -1,33 +1,58 @@
 
 {% include 'partial/header.html' %}
 {% include 'partial/navbar.html' %}
-<center>
-<p>user details</p>
-<section id="feedback">{{feedback}}</section>
-{% if btn_context == "create" %}
-<form action="/users" method="POST">
-{% elif btn_context == "update delete"%}
-<form action="/users/{{username_field}}" method="POST">
-{% endif %}
-  <label for="username_input">Username:</label>
-  <input type="text" id="username_input" name="username" value={{username_field}}>
-  <br><br>
-  <label for="password_input">Password:</label>
-  <input type="text" id="password_input" name="password" value={{password_field}}>
-  <br><br>
-  <label for="email_input">Email:</label>
-  <input type="text" id="email_input" name="email" value={{email_field}}>
-  <br><br>
-  {% if btn_context == "create" %}
-  <input type="submit" value="Create" id="user_details_submit">
-  {% elif btn_context == "update delete"%}
-  <input type="submit" value="Update" id="user_details_submit">
-  {% endif %}
-</form>
-{% if btn_context == "update delete" %}
-<form action="/users/delete/{{username_field}}" method="GET">
-  <input type="submit" value="Delete" id="user_details_delete_submit">
-</form>
-{% endif %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* Center the content between the navbar and footer */
+    .center-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center; /* Center vertically */
+      align-items: center; /* Center horizontally */
+      min-height: calc(100vh - 220px); /* Adjust based on navbar and footer height */
+    }
+    .user-form {
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* Center form items horizontally */
+      gap: 5px; /* Add spacing between form elements */
+    }
+  </style>
+</head>
+<body>
+  <div class="center-content">
+    {% if btn_context == "create" %}
+    <h5 style="font-weight: bold;">Create User</h5>
+    {% elif btn_context == "update delete"%}
+    <h5 style="font-weight: bold;">Update User</h5>
+    {% endif %}
+    <br>
+    <section id="feedback">{{feedback}}</section>
+    {% if btn_context == "create" %}
+    <form action="/users" method="POST" class="user-form">
+    {% elif btn_context == "update delete"%}
+    <form action="/users/{{username_field}}" method="POST" class="user-form">
+    {% endif %}
+      <input type="text" placeholder="Username" id="username_input" name="username" value={{username_field}}>
+      <input type="text" placeholder="Password" id="password_input" name="password" value={{password_field}}>
+      <input type="text" placeholder="Email" id="email_input" name="email" value={{email_field}}>
+      {% if btn_context == "create" %}
+      <input type="submit" value="Create" id="user_details_submit" style="margin-top:10px;">
+      {% elif btn_context == "update delete"%}
+      <input type="submit" value="Update" id="user_details_submit" style="margin-top:10px;">
+      {% endif %}
+    </form>
+    {% if btn_context == "update delete" %}
+    <form action="/users/delete/{{username_field}}" method="GET">
+      <input type="submit" value="Delete" id="user_details_delete_submit" style="margin-top:10px;">
+    </form>
+    {% endif %}
+  </div>
+</body>
+</html>
 {% include 'partial/footer.html' %}
-</center>

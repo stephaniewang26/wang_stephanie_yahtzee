@@ -2,17 +2,17 @@
 {% include 'partial/navbar.html' %}
 <center>
 <br>
+<br>
 <h1>{{username}} Games</h1>
 <section id="feedback">{{feedback}}</section>
 <ol id="games_list">
     {% for game in games_list %}
-    <li><a href="/games/{{game}}/{{username}}">{{game}}</a> <a href="/games/delete/{{game}}/{{username}}">Delete</a></li>
+    <li><a href="http://localhost:3000/games/{{game}}/{{username}}">{{game}}</a> <a href="/games/delete/{{game}}/{{username}}">Delete</a></li>
     {% endfor %}
 </ol>
 
 <form action="/games" method="POST">
-    <label for="game_name_input">Game name:</label>
-    <input type="text" id="game_name_input" name="game_name">
+    <input type="text" id="game_name_input" name="game_name" placeholder="Game Name">
     <input type="submit" value="Create" id="create_submit">
     <input type="button" value="Join" id="join_submit">
     <input type="hidden" id="hidden_username" name="username" value={{username}}>
@@ -22,7 +22,7 @@
 <h1>High Scores</h1>
 <ol id="high_scores_list">
     {% for tup in high_scores_list %}
-    <li>{{tup[0]}} : {{tup[1]}}</li>
+    <li>{{tup[0]}}: {{tup[1]}}</li>
     {% endfor %}
 </ol>
 
@@ -48,7 +48,7 @@
 
             let current_games_list = (document.getElementById("games_list").innerHTML)
             if (json["status"] != "error"){
-                let new_game_entry = `<li><a href="/games/mygame/${username}">${game_name}</a> <a href="/games/delete/mygame/${username}">Delete</a></li>`
+                let new_game_entry = `<li><a href="http://localhost:3000/games/${game_name}/${username}">${game_name}</a> <a href="/games/delete/${game_name}/${username}">Delete</a></li>`
                 document.getElementById("games_list").innerHTML = `${current_games_list} ${new_game_entry}`
             }
 

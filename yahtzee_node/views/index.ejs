@@ -1,0 +1,470 @@
+<%- include('partial/header.html'); %>
+<%- include('partial/navbar.html'); %>
+<center>
+  <br>
+  <h1 id="game_heading"><%=game_name%>: <%=username%></h1> 
+  <p style="font-weight: bold;">Currently Playing: <span id="game_players">0</span></p>
+  <!-- <ul>
+    <% for(const username of usernames_list) { %>
+      <li><%= username %></li>
+    <% } %>
+  </ul> -->
+  <section id="save_and_load">
+      <table>
+          <tr>                
+              <td colspan="2"><button id="save_game" type="button">Save Game</button></td>
+              <td colspan="2"><button id="load_game" type="button">Load Game</button></td>
+          </tr>
+      </table>
+  </section>
+  <section id="dice">
+      <table>
+        <tr>
+          <td><img id="die_0" class="die" src="/img/blank.svg" width="70" /></td>
+          <td><img id="die_1" class="die" src="/img/blank.svg" width="70" /></td>
+          <td><img id="die_2" class="die" src="/img/blank.svg" width="70" /></td>
+          <td><img id="die_3" class="die" src="/img/blank.svg" width="70" /></td>
+          <td><img id="die_4" class="die" src="/img/blank.svg" width="70" /></td>
+        </tr>
+        <tr>
+          <td colspan="3">Rolls remaining: <span id="rolls_remaining">3</span></td>
+          <td colspan="2"><button id="roll_button" type="button">Roll the Dice!</button></td>
+        </tr>
+      </table>
+      <br>
+  </section>
+  <section id="feedback" class="good">Welcome to Yahtzee!</section>
+  <section id="scorecard">
+    <table id="scorecard_table">
+      <tr>
+        <th>UPPER SECTION</th>
+        <th>HOW TO SCORE</th>
+        <th><%=username%></th>
+      </tr>
+      <tr>
+        <td>one <img src="/img/one.svg" width="20" /> =1</td>
+        <td>Count and Add Only one</td>
+        <% for(const user of usernames_list) { %>
+          <% if ( user == username) { %>
+            <td><input type="text" class="upper category" id="one_input|<%=username%>" size="3"></td>
+          <% } else { %>
+            <td><input type="text" class="upper category" id="one_input|<%=user%>" size="3" readonly></td>
+          <% } %>
+        <% } %>
+      </tr>
+      <tr>
+        <td>two <img src="/img/two.svg" width="20" /> =2</td>
+        <td>Count and Add Only two</td>
+        <% for(const user of usernames_list) { %>
+          <% if ( user == username) { %>
+            <td><input type="text" class="upper category" id="two_input|<%=username%>" size="3"></td>
+          <% } else { %>
+            <td><input type="text" class="upper category" id="two_input|<%=user%>" size="3" readonly></td>
+          <% } %>
+        <% } %>
+      </tr>
+      <tr>
+        <td>three <img src="/img/three.svg" width="20" /> =3</td>
+        <td>Count and Add Only three</td>
+        <% for(const user of usernames_list) { %>
+          <% if ( user == username) { %>
+            <td><input type="text" class="upper category" id="three_input|<%=username%>" size="3"></td>
+          <% } else { %>
+            <td><input type="text" class="upper category" id="three_input|<%=user%>" size="3" readonly></td>
+          <% } %>
+        <% } %>
+      </tr>
+      <tr>
+        <td>four <img src="/img/four.svg" width="20" /> =4</td>
+        <td>Count and Add Only four</td>
+        <% for(const user of usernames_list) { %>
+          <% if ( user == username) { %>
+            <td><input type="text" class="upper category" id="four_input|<%=username%>" size="3"></td>
+          <% } else { %>
+            <td><input type="text" class="upper category" id="four_input|<%=user%>" size="3" readonly></td>
+          <% } %>
+        <% } %>
+      </tr>
+      <tr>
+        <td>five <img src="/img/five.svg" width="20" /> =5</td>
+        <td>Count and Add Only five</td>
+        <% for(const user of usernames_list) { %>
+          <% if ( user == username) { %>
+            <td><input type="text" class="upper category" id="five_input|<%=username%>" size="3"></td>
+          <% } else { %>
+            <td><input type="text" class="upper category" id="five_input|<%=user%>" size="3" readonly></td>
+          <% } %>
+        <% } %>
+      </tr>
+      <tr>
+        <td>six <img src="/img/six.svg" width="20" /> =6</td>
+        <td>Count and Add Only six</td>
+        <% for(const user of usernames_list) { %>
+          <% if ( user == username) { %>
+            <td><input type="text" class="upper category" id="six_input|<%=username%>" size="3"></td>
+          <% } else { %>
+            <td><input type="text" class="upper category" id="six_input|<%=user%>" size="3" readonly></td>
+          <% } %>
+        <% } %>
+      </tr>
+      <tr>
+        <td>TOTAL SCORE</td>
+        <td> -- </td>
+        <% for(const username of usernames_list) { %>
+          <td class="upper score" id="upper_score|<%=username%>"></td>
+        <% } %>
+      </tr>
+      <tr>
+        <td>BONUS</td>
+        <td> If total score is more than 63, score 35 </td>
+        <% for(const username of usernames_list) { %>
+          <td class="upper score" id="upper_bonus|<%=username%>"></td>
+        <% } %>
+      </tr>
+      <tr>
+        <td>TOTAL</td>
+        <td> Of Upper Section </td>
+        <% for(const username of usernames_list) { %>
+          <td class="upper score" id="upper_total|<%=username%>"></td>
+        <% } %>
+      </tr>
+      <tr>
+        <th>LOWER SECTION</th>
+        <th></th>
+        <th></th>
+      </tr>
+      <tr>
+        <td>3 of a kind</td>
+        <td>Add Total of All Dice</td>
+        <% for(const user of usernames_list) { %>
+          <% if ( user == username) { %>
+            <td><input type="text" class="lower category" id="three_of_a_kind_input|<%=username%>" size="3"></td>
+          <% } else { %>
+            <td><input type="text" class="lower category" id="three_of_a_kind_input|<%=user%>" size="3" readonly></td>
+          <% } %>
+        <% } %>
+      </tr>
+      <tr>
+        <td>4 of a kind</td>
+        <td>Add Total of All Dice</td>
+        <% for(const user of usernames_list) { %>
+          <% if ( user == username) { %>
+            <td><input type="text" class="lower category" id="four_of_a_kind_input|<%=username%>" size="3"></td>
+          <% } else { %>
+            <td><input type="text" class="lower category" id="four_of_a_kind_input|<%=user%>" size="3" readonly></td>
+          <% } %>
+        <% } %>
+      </tr>
+      <tr>
+        <td>Full House</td>
+        <td>Score 25</td>
+        <% for(const user of usernames_list) { %>
+          <% if ( user == username) { %>
+            <td><input type="text" class="lower category" id="full_house_input|<%=username%>" size="3"></td>
+          <% } else { %>
+            <td><input type="text" class="lower category" id="full_house_input|<%=user%>" size="3" readonly></td>
+          <% } %>
+        <% } %>
+      </tr>
+      <tr>
+        <td>Small Straight (Sequence of 4)</td>
+        <td>Score 30</td>
+        <% for(const user of usernames_list) { %>
+          <% if ( user == username) { %>
+            <td><input type="text" class="lower category" id="small_straight_input|<%=username%>" size="3"></td>
+          <% } else { %>
+            <td><input type="text" class="lower category" id="small_straight_input|<%=user%>" size="3" readonly></td>
+          <% } %>
+        <% } %>
+      </tr>
+      <tr>
+        <td>Large Straight (Sequence of 5)</td>
+        <td>Score 40</td>
+        <% for(const user of usernames_list) { %>
+          <% if ( user == username) { %>
+            <td><input type="text" class="lower category" id="large_straight_input|<%=username%>" size="3"></td>
+          <% } else { %>
+            <td><input type="text" class="lower category" id="large_straight_input|<%=user%>" size="3" readonly></td>
+          <% } %>
+        <% } %>
+      </tr>
+      <tr>
+        <td>Yahtzee (5 of a kind)</td>
+        <td>Score 50</td>
+        <% for(const user of usernames_list) { %>
+          <% if ( user == username) { %>
+            <td><input type="text" class="lower category" id="yahtzee_input|<%=username%>" size="3"></td>
+          <% } else { %>
+            <td><input type="text" class="lower category" id="yahtzee_input|<%=user%>" size="3" readonly></td>
+          <% } %>
+        <% } %>
+      </tr>
+      <tr>
+        <td>Chance</td>
+        <td>Score Total Of all 5 Dice</td>
+        <% for(const user of usernames_list) { %>
+          <% if ( user == username) { %>
+            <td><input type="text" class="lower category" id="chance_input|<%=username%>" size="3"></td>
+          <% } else { %>
+            <td><input type="text" class="lower category" id="chance_input|<%=user%>" size="3" readonly></td>
+          <% } %>
+        <% } %>
+      </tr>
+      <tr>
+        <td>Total (Of Lower Section) </td>
+        <td></td>
+        <% for(const username of usernames_list) { %>
+          <td class="lower score" id="lower_score|<%=username%>"></td>
+        <% } %>
+      </tr>
+      <tr>
+        <td>Total (Of Upper Section)</td>
+        <td></td>
+        <% for(const username of usernames_list) { %>
+          <td class="lower score" id="upper_total_lower|<%=username%>"></td>
+        <% } %>
+      </tr>
+      <tr>
+        <td>Grand Total </td>
+        <td></td>
+        <% for(const username of usernames_list) { %>
+          <td class="lower score" id="grand_total|<%=username%>"></td>
+        <% } %>
+      </tr>
+    </table>
+  </section>
+  <br>
+  <br>
+  <div id="all_chat_elements">
+    <div id="chat_section">
+    <textarea id="chat_display" name="chat_info"rows="10" cols="60" readonly style="resize:none;"></textarea>
+    <br>
+    
+    <input type="text" id="chat_message" size="61" placeholder="Start typing...">
+    <br>
+    <button type="button" id="chat_button" style="visibility:hidden;">Send</button>
+    </div>
+    
+    <!-- <h4>Yahtzee Players Currently Online:<span id="total_players">0</span></h4> -->
+    
+    <script>
+      let socket = io.connect('/');//the default namespace
+      socket.emit('game_connection', {username:'<%=username%>', game_name:'<%=game_name%>'});
+
+      socket.on('game_connection', function(data) {
+          console.log(data.username+" has joined the game!")
+
+          //keep track of the current number of connected game players
+          let game_players_element = document.getElementById('game_players');
+          game_players_element.innerText = data.num_game_connections;
+          let chat_display_element = document.getElementById('chat_display');
+          let text = " has joined the game!\n";
+          if(data.username)
+            text = data.username+text;
+
+          chat_display_element.value = chat_display_element.value+text;
+      });
+
+      socket.on('connection', function(data) {
+        console.log("New player has connected to Yahtzee!")
+        // let total_players_element = document.getElementById('total_players');
+        // total_players_element.innerText = data.num_total_connections;
+
+        //console.log("the username im giving meep is <%=username%>")
+        socket.emit('meep', {username:'<%=username%>',game_name:'<%=game_name%>'});
+      });
+
+      socket.on('meep', function(data){
+        console.log(data.usernames_list)
+
+        let last_turn = 1
+        let new_username = ""
+        let other_usernames = []
+        console.log(data.scorecards_list)
+
+        for (const scorecard of data.scorecards_list){
+          if (scorecard["turn_order"] > last_turn){
+            last_turn = scorecard["turn_order"]
+            
+            let bar_position = scorecard["name"].indexOf("|")+1
+            new_username = scorecard["name"].slice(bar_position)
+          }
+        }
+
+        console.log("the new player is....",new_username)
+
+        if (new_username == data.username){
+          for (const scorecard of data.scorecards_list){
+            let bar_position = scorecard["name"].indexOf("|")+1
+            let current_username = scorecard["name"].slice(bar_position)
+            
+            if (current_username != new_username)
+              other_usernames.push(current_username)
+          }
+        }
+
+        function add_column(new_username, scorecards_list) {
+          const table = document.querySelector('#scorecard_table');
+          console.log("table",table)
+          const table_body = table.querySelector("tbody")
+
+          table_body.querySelectorAll('tr').forEach((row, index) => {
+            // header row
+            if (index === 0) {
+              //check if it already has a th with the username
+              const new_th_exists = Array.from(row.querySelectorAll('th')).some(th => th.textContent == new_username);
+              if (new_th_exists == false) {
+                const th = document.createElement('th');
+                th.textContent = new_username;
+                row.appendChild(th);
+              }
+            }
+            else {
+              //input rows
+              const tds = row.querySelectorAll('td');
+              const base_td = tds[2]
+
+              //console.log(base_td)
+              if(base_td){
+                if (base_td.querySelector('input') != null) {
+                  const base_input = base_td.querySelector('input')
+                  //console.log(base_input.classList[1])
+
+                  const input = document.createElement('input');
+                  input.type = 'text';
+                  input.size = 3;
+                  input.classList.add(base_input.classList[0], base_input.classList[1])
+                  input.readOnly = true;
+
+                  let bar_position = base_input.id.indexOf("|")+1
+                  let extracted_username = base_input.id.slice(bar_position)
+                  input.id = base_input.id.replace(extracted_username, new_username)
+                  
+                  const new_input_exists = Array.from(row.querySelectorAll('td')).some(td => {
+                    const existing_input = td.querySelector('input'); // Get the <input> inside the <td>
+                    //console.log("existing input",existing_input)
+                    return existing_input && existing_input.id == input.id;
+                  });
+
+                  if (new_input_exists == false){
+                    const input_td = document.createElement('td');
+                    input_td.appendChild(input);
+                    row.appendChild(input_td);
+                  }
+                }
+                else {
+                  // score rows
+
+                  //console.log(base_td.classList[1])
+                  const score_td = document.createElement('td');
+                  score_td.classList.add(base_td.classList[0], base_td.classList[1])
+
+                  let bar_position = base_td.id.indexOf("|")+1
+                  let extracted_username = base_td.id.slice(bar_position)
+                  score_td.id = base_td.id.replace(extracted_username, new_username)
+
+                  const new_score_exists = Array.from(row.querySelectorAll('td')).some(td => td.id.includes(new_username));
+
+                  if (new_score_exists == false){
+                    row.appendChild(score_td);
+                  }
+                }
+              }
+            }
+          });
+        }
+
+        function update_columns(){
+          console.log(data.scorecards_list)
+          for (const scorecard of data.scorecards_list){
+            let scorecard_name = scorecard["name"]
+            let bar_position = scorecard_name.indexOf("|")+1
+            let extracted_username = scorecard_name.slice(bar_position)
+            console.log("extracted username",extracted_username)
+            
+            if (extracted_username != data.username){
+              delete scorecard["categories"]["rolls_remaining"]
+              //console.log(scorecard["categories"])
+            }
+            
+            for (const section in scorecard["categories"]){
+              for (const category in scorecard["categories"][section]){
+                let with_username = `${category}|${extracted_username}`
+                //console.log(with_username)
+                //console.log(scorecard["categories"][section][category])
+                
+                scorecard["categories"][section][with_username] = scorecard["categories"][section][category]
+                //console.log("Received data in index.ejs:", scorecard["categories"][section][with_username]);
+                delete scorecard["categories"][section][category]
+              }
+            }
+            console.log("scorecard categories",scorecard["categories"])
+
+            console.log("the data username is ",data.username)
+            gamecard.load_scorecard(scorecard["categories"],extracted_username,"<%=username%>")
+          }
+        }
+
+        if (other_usernames.length == 0 && new_username != ""){
+          add_column(new_username, data.scorecards_list);
+        }
+        else{
+          for (let i=0; i<other_usernames.length; i++){
+            add_column(other_usernames[i], data.scorecards_list);
+          }
+        }
+
+        console.log("the username i got is ",data.username)
+        update_columns()
+      })
+
+      socket.on('chat', function(data) {
+          console.log("Chat message received from "+data.username+": "+data.message)
+          let chat_display_element = document.getElementById('chat_display');
+          let text = data.message+"\n";
+          if(data.username)
+            text = data.username+": "+text;
+
+          chat_display_element.value+=text;
+      });
+
+      let chat_input = document.getElementById("chat_message"); // Here your text input element
+      chat_input.addEventListener("keyup", function(event) {
+          if (event.keyCode === 13) { // 13 is the number of Enter key on keyboard
+              event.preventDefault();
+              document.getElementById("chat_button").click(); // Here your button 
+          }
+
+          document.getElementById("chat_display").scrollTop = document.getElementById("chat_display").scrollHeight 
+      })
+
+      document.getElementById("chat_button").addEventListener('click', function(){
+        let message_data = document.getElementById("chat_message").value;
+        console.log("sending: "+message_data);
+        socket.emit('chat', {
+          username:'<%=username%>',
+          game_name:'<%=game_name%>',
+          message: message_data
+        });
+        document.getElementById("chat_message").value="";
+      });
+      
+      let my_username = '<%=username%>'
+      socket.on('valid_score_submitted', function(data) {
+        console.log("Valid score received from "+data.event_username)
+        console.log(my_username)
+        gamecard.load_scorecard(data.score_info, data.event_username,my_username)
+      });
+      
+      socket.on('goodbye', function(data) {
+        let game_players_element = document.getElementById('game_players');
+        game_players_element.innerText = data.num_game_connections;
+      });
+    </script>
+  </div>
+  <br>
+  <%- include('partial/footer.html'); %>
+</center>
+<script src="/js/UI.js"  type="module"></script>
+
+  

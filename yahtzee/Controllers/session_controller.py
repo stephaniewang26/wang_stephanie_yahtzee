@@ -22,7 +22,7 @@ import game_controller
 
 def index():
     print(f"request.url={request.url}")
-    return render_template('login.html', title=titles_dict["login"])
+    return render_template('login.html', logged_in=False, title=titles_dict["login"], current_route=request.path)
 
 def login():
     print(f"request.url={request.url}")
@@ -30,7 +30,7 @@ def login():
     password = request.args.get('password')
 
     if (Users.exists(username=username))["data"] != True:
-        return render_template('login.html', feedback="That user does not exist!",title=titles_dict["login"])
+        return render_template('login.html', logged_in=False, my_games=True, feedback="That user does not exist!",title=titles_dict["login"], current_route=request.path)
 
     get_packet_data = (Users.get(username=username))["data"]
 
@@ -39,6 +39,6 @@ def login():
 
         high_scores_list = game_controller.return_high_scores(username)
 
-        return render_template('user_games.html', high_scores_list=high_scores_list, games_list=all_game_names, username=username, password=password, title=titles_dict["user_games"])
+        return render_template('user_games.html', current_route=request.path, logged_in=True, my_games=True, high_scores_list=high_scores_list, games_list=all_game_names, username=username, password=password, title=titles_dict["user_games"])
     else:
-        return render_template('login.html',feedback="Incorrect password.",title=titles_dict["login"])
+        return render_template('login.html', logged_in=False, my_games=True, current_route=request.path, feedback="Incorrect password.",title=titles_dict["login"])

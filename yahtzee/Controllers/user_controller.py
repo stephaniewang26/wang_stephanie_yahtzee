@@ -23,7 +23,7 @@ def users():
     print(f"request.url={request.url}")
 
     if request.method == 'GET':
-        return render_template('user_details.html', btn_context="create", title=titles_dict["user_details"])
+        return render_template('user_details.html', logged_in=False, my_games=True, current_route=request.path,btn_context="create", title=titles_dict["user_details"])
     elif request.method == 'POST':
         # get values inputted ✅
         inputted_username = request.form.get("username")
@@ -38,7 +38,7 @@ def users():
         exists_packet = Users.exists(username=inputted_info["username"])
         if exists_packet["data"] == True:
             print("exists!")
-            return render_template('user_details.html', feedback="User already exists!", btn_context="create", title=titles_dict["user_details"])
+            return render_template('user_details.html', logged_in=False, my_games=True, current_route=request.path,feedback="User already exists!", btn_context="create", title=titles_dict["user_details"])
         # if not, then attempt to create ✅
         else:
             create_packet = Users.create(inputted_info)
@@ -48,23 +48,23 @@ def users():
 
                 high_scores_list = game_controller.return_high_scores(create_packet["data"]["username"])
 
-                return render_template('user_games.html', high_scores_list=high_scores_list, title=titles_dict["user_games"], games_list=all_game_names, username=create_packet["data"]["username"])
+                return render_template('user_games.html', logged_in=True, my_games=True, current_route=request.path, high_scores_list=high_scores_list, title=titles_dict["user_games"], games_list=all_game_names, username=create_packet["data"]["username"])
             #if not, then use feedback from error message and template it in ✅
             else:
-                return render_template('user_details.html', feedback=create_packet["data"], btn_context="create", title=titles_dict["user_details"])
+                return render_template('user_details.html', logged_in=False, my_games=True, current_route=request.path, feedback=create_packet["data"], btn_context="create", title=titles_dict["user_details"])
 
 def users_username(username):
     print(f"request.url={request.url}")
 
     if (Users.exists(username=username))["data"] != True:
-        return render_template('user_details.html', feedback="That user does not exist!", btn_context="create", title=titles_dict["user_details"])
+        return render_template('user_details.html', logged_in=False, cog_active=True,current_route=request.path, feedback="That user does not exist!", btn_context="create", title=titles_dict["user_details"])
 
     get_packet_data = (Users.get(username=username))["data"]
     user_id = get_packet_data["id"]
 
     if request.method == 'GET':
         #get user details page for update/delete, pre-fill text fields
-        return render_template('user_details.html', btn_context="update delete", title=titles_dict["user_details"], username_field=get_packet_data["username"], password_field=get_packet_data["password"], email_field=get_packet_data["email"])
+        return render_template('user_details.html', logged_in=True, cog_active=True,current_route=request.path, btn_context="update delete", title=titles_dict["user_details"], username=get_packet_data["username"],username_field=get_packet_data["username"], password_field=get_packet_data["password"], email_field=get_packet_data["email"])
     elif request.method == 'POST':
         #update user details
         inputted_username = request.form.get("username")
@@ -79,19 +79,19 @@ def users_username(username):
         #if succeeds, render template
         update_packet = Users.update(user_info=updated_info)
         if (update_packet)["status"] == "success":
-            return render_template('user_details.html', feedback="User successfully updated!", btn_context="update delete", title=titles_dict["user_details"], username_field=updated_info["username"], password_field=updated_info["password"], email_field=updated_info["email"])
+            return render_template('user_details.html', logged_in=True, cog_active=True,current_route=request.path, feedback="User successfully updated!", btn_context="update delete", title=titles_dict["user_details"], username=updated_info["username"], username_field=updated_info["username"], password_field=updated_info["password"], email_field=updated_info["email"])
         #else, show bad feedback
         else:
-            return render_template('user_details.html', feedback=update_packet["data"], btn_context="update delete", title=titles_dict["user_details"], username_field=get_packet_data["username"], password_field=get_packet_data["password"], email_field=get_packet_data["email"])
+            return render_template('user_details.html', logged_in=True, cog_active=True,current_route=request.path, feedback=update_packet["data"], btn_context="update delete", title=titles_dict["user_details"], username=updated_info["username"],username_field=get_packet_data["username"], password_field=get_packet_data["password"], email_field=get_packet_data["email"])
 
 def users_delete_username(username):
     print(f"request.url={request.url}")
 
     if (Users.exists(username=username))["data"] != True:
-        return render_template('login.html', title=titles_dict["login"], feedback="That user does not exist!")
+        return render_template('login.html', logged_in=False, current_route=request.path, title=titles_dict["login"], feedback="That user does not exist!")
     else:
         Users.remove(username=username)
-        return render_template('login.html', title=titles_dict["login"], feedback="User successfully deleted.")
+        return render_template('login.html', logged_in=False, current_route=request.path, title=titles_dict["login"], feedback="User successfully deleted.")
 
 
 

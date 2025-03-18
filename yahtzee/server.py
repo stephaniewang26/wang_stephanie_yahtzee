@@ -29,8 +29,10 @@ app.add_url_rule('/games/join', view_func=game_controller.games_join, methods = 
 app.add_url_rule('/games/delete/<game_name>/<username>', view_func=game_controller.games_delete_game_name_username, methods = ['GET'])
 app.add_url_rule('/games/<game_name>/<username>', view_func=game_controller.games_game_name_username, methods = ['GET'])
 app.add_url_rule('/games/data/<game_name>', view_func=game_controller.games_data_game_name, methods = ['GET'])
+app.add_url_rule('/games/scorecards/<game_name>', view_func=game_controller.games_scorecards_game_name, methods = ['GET'])
 
 #SCORECARD
+app.add_url_rule('/games/receive/scorecard', view_func=game_controller.games_receive_scorecard, methods = ['POST'])
 
 #USER
 app.add_url_rule('/users', view_func=user_controller.users, methods = ['POST', 'GET'])

@@ -1,0 +1,69 @@
+
+@font-face {
+    font-family: 'Revue';
+    src: url('../font/Revue.eot');
+    src: url('../font/Revue.eot?#iefix') format('embedded-opentype'),
+        url('../font/Revue.woff2') format('woff2'),
+        url('../font/Revue.woff') format('woff'),
+        url('../font/Revue.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+h1{
+    font-family: Revue;
+    font-weight: 500;
+    font-style: normal;
+    color: #f44343;
+}
+
+body {
+    background-color: #fff9ea;
+    color: rgb(0, 0, 0);
+    font-family: "PT Serif", serif;
+    height:100%;
+}
+
+html{
+    height: 100%;
+}
+
+ol{
+    list-style-type: decimal;
+    list-style-position: inside;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    -webkit-padding-start: 0px;
+}
+
+#logo{
+    font-family: Revue;
+    font-weight: 500;
+    font-style: normal;
+    color: #f44343;
+}
+
+.reserved {
+    border: 2px solid red;
+    border-radius: 10px;    
+}
+
+.good {
+    color: green;
+    font-weight: bold;
+}
+
+.bad{
+    color:#f44343;
+    font-weight: bold;
+}
+
+table, th, td {
+    
+    padding-left:5px;
+    padding-right:5px;
+}

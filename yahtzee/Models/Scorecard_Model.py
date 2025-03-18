@@ -30,6 +30,7 @@ class Scorecard:
                 )
                 """
         cursor.execute(f"DROP TABLE IF EXISTS {self.table_name};")
+        cursor.execute(f"DROP TABLE scorecards;")
         results=cursor.execute(schema)
         db_connection.close()
     
@@ -201,6 +202,7 @@ class Scorecard:
 
             user_game_names_list = []
             for card_tup in all_cards:
+                print(card_tup)
                 if (card_tup[5].split("|"))[1] == username:
                     user_game_names_list.append((card_tup[5].split("|"))[0])
             
@@ -293,14 +295,14 @@ class Scorecard:
     
     def create_blank_score_info(self):
         return {
-            "dice_rolls":0,
+            "rolls_remaining":3,
             "upper":{
-                "ones":-1,
-                "twos":-1,
-                "threes":-1,
-                "fours":-1,
-                "fives":-1,
-                "sixes":-1
+                "one":-1,
+                "two":-1,
+                "three":-1,
+                "four":-1,
+                "five":-1,
+                "six":-1
             },
             "lower":{
                 "three_of_a_kind":-1,
